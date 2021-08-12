@@ -29,7 +29,6 @@ function RouterProvider(): JSX.Element {
   const { data, loading } = UserQuery()
 
   const authenticated = Boolean(data?.user)
-  // const a = 1
 
   if (loading) {
     return <SplashScreen />

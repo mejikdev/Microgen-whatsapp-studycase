@@ -1,6 +1,6 @@
 import { Button, Grid, InputAdornment, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
-import LoadingConnecting from "components/modal/LoadingConnecting"
+import AlertMessage from "components/modal/AlertMessage"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
 import React, { useState } from "react"
@@ -40,6 +40,7 @@ const Home: React.FC = () => {
   const { login } = AuthMutation()
   const { register, handleSubmit } = useForm<IFormInput>()
   const [loading, setLoading] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   // !TODO alert error
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -56,21 +57,25 @@ const Home: React.FC = () => {
         localStorage.setItem("phoneNumber", fullPhoneNumber)
         history.push("/verification")
       })
-      .catch((err: any) => {
-        console.log(err)
+      .catch((err) => {
         setLoading(false)
+        setFailed(true)
       })
   }
 
   if (loading) {
-    return <LoadingConnecting message="Connecting ..." />
+    return <AlertMessage loading={true} message="Connecting ..." />
+  }
+
+  if (failed) {
+    return <AlertMessage message="Something Wrong!" action={() => setFailed(false)} />
   }
 
   return (
     <div>
       <Title
         title={"Enter your phone number"}
-        description={"WhatsApp will send an SMS message to verify your phone number. Whats' my number"}
+        description={"WhatsApp will send an SMS message to verify your phone number"}
       />
       {/* !TODO input style */}
       <form onSubmit={handleSubmit(onSubmit)}>

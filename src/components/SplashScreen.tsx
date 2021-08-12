@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   mgLogo: {
     display: "block",
     margin: "0px auto",
-    width: 15,
-    height: 15,
+    width: 25,
+    height: 28,
     paddingBottom: 5,
   },
   headerTitle: {
@@ -43,13 +43,21 @@ const SplashScreen = (): JSX.Element => {
       <CssBaseline />
       <div className={classes.root}>
         <div className={classes.header}>
-          <img src={process.env.PUBLIC_URL + "/icon/waIcon.png"} className={classes.waIcon} alt="logo whatsapp" />
+          <img
+            src={process.env.REACT_APP_FRONTEND_URL + "/icon/waIcon.png"}
+            className={classes.waIcon}
+            alt="logo whatsapp"
+          />
           <Typography variant="h5" align="center" className={classes.headerTitle}>
             Whatsapp Clone
           </Typography>
         </div>
         <div className={classes.footer}>
-          <img src={process.env.PUBLIC_URL + "/icon/mgIcon.png"} className={classes.mgLogo} alt="logo microgen" />
+          <img
+            src={process.env.REACT_APP_FRONTEND_URL + "/icon/mgLogo.png"}
+            className={classes.mgLogo}
+            alt="logo microgen"
+          />
           <Typography variant="caption" align="center">
             created with
           </Typography>

@@ -9,7 +9,7 @@ type propsType = {
 
 const useStyles = makeStyles({
   root: {
-    padding: "15px 25px 0px",
+    padding: "15px 35px 0px",
   },
   title: {
     fontWeight: "bold",

@@ -1,12 +1,12 @@
-import { Button, Grid, TextField } from "@material-ui/core"
+import { Button, Divider, Grid, TextField, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
-import LoadingConnecting from "components/modal/LoadingConnecting"
+import AlertMessage from "components/modal/AlertMessage"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
 import { setCookie } from "nookies"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useHistory } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({
   inputSection: {
@@ -20,10 +20,28 @@ const useStyles = makeStyles({
     margin: "0px auto",
     left: 145,
   },
+  resendGroup: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "15px 20px 0",
+  },
+  resend: {
+    display: "flex",
+  },
+  iconSms: {
+    height: 20,
+    width: 20,
+    marginRight: 5,
+    alignSelf: "center",
+  },
 })
 
 interface IFormInput {
   code: number
+}
+
+const initialValue = {
+  code: "",
 }
 
 // !TODO input style
@@ -32,8 +50,9 @@ const Verifcation: React.FC = () => {
   const history = useHistory()
   const { verify } = AuthMutation()
   const [loading, setLoading] = useState(false)
+  const [failed, setFailed] = useState<any>(false)
   const phoneNumber = localStorage.getItem("phoneNumber")
-  const { register, handleSubmit } = useForm<IFormInput>()
+  const { register, reset, handleSubmit } = useForm<IFormInput>()
 
   useEffect(() => {
     if (!phoneNumber) {
@@ -52,32 +71,75 @@ const Verifcation: React.FC = () => {
     })
       .then((res: any) => {
         setLoading(false)
-        setCookie(null, "token", res?.data)
+        setCookie(null, "token", res?.data?.verifyLoginWithPhone.token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        })
+        history.push("/")
       })
-      .catch((err: any) => {
-        console.log(err)
+      .catch((err: Error) => {
+        reset()
         setLoading(false)
+        if (err?.message?.includes("Invalid verification code")) {
+          setFailed({ message: "Invalid verification code" })
+        } else {
+          setFailed(true)
+        }
       })
   }
 
   if (loading) {
-    return <LoadingConnecting message="Verifying ..." />
+    return <AlertMessage message="Verifying ..." />
+  }
+
+  if (failed) {
+    return <AlertMessage message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
+  }
+
+  const Description = (): JSX.Element => {
+    return (
+      <div>
+        Waiting to automatically detect as SMS sent to {phoneNumber}. <Link to="/public">Wrong number ?</Link>
+      </div>
+    )
   }
 
   return (
     <>
-      <Title
-        title="Verify your phone number"
-        description={`Waiting to automatically detect as SMS sent to ${phoneNumber}. Wrong number?`}
-      />
+      <Title title="Verify your phone number" description={Description()} />
       {/* !TODO input style */}
-      {/* !TODO validation input */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container className={classes.inputSection}>
           <Grid item xs={6}>
-            <TextField id="standard-select-currency-native" type="number" fullWidth {...register("code")} />
+            <TextField
+              id="standard-select-currency-native"
+              helperText={
+                <Typography variant="caption" style={{ textAlign: "center" }} display="block">
+                  Enter 6 digit code
+                </Typography>
+              }
+              type="number"
+              fullWidth
+              {...register("code")}
+            />
           </Grid>
         </Grid>
+
+        <div className={classes.resendGroup}>
+          <div className={classes.resend}>
+            <img
+              src={process.env.REACT_APP_FRONTEND_URL + "/icon/smsIcon.png"}
+              alt="sms icon"
+              className={classes.iconSms}
+            />
+            <Typography variant="body1">Resend SMS</Typography>
+          </div>
+          <div>
+            <Typography variant="subtitle1">1.00</Typography>
+          </div>
+        </div>
+
+        <Divider style={{ margin: "0px 20px", color: "red" }} />
 
         <div className={classes.footer}>
           <Button
