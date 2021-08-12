@@ -2,6 +2,10 @@ import { UserQuery } from "hooks/user"
 import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 
+import SplashScreen from "./components/SplashScreen"
+import Home from "./pages/Home"
+import Verification from "./pages/Verification"
+
 type IPrivateRoute = {
   path: string
   autheticated: boolean
@@ -25,16 +29,20 @@ function RouterProvider(): JSX.Element {
   const { data, loading } = UserQuery()
 
   const authenticated = Boolean(data?.user)
+  // const a = 1
 
   if (loading) {
-    return <b>loading</b>
+    return <SplashScreen />
   }
 
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/public">
-          <div>Public</div>
+          <Home />
+        </Route>
+        <Route exact path="/verification">
+          <Verification />
         </Route>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/">
           <div>autheticated user page</div>
