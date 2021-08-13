@@ -22,7 +22,6 @@ const useStyles = makeStyles({
   },
 })
 
-// !TODO props description
 const Title = (props: propsType): JSX.Element => {
   const { title, description } = props
   const classes = useStyles()

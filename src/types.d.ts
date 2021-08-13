@@ -11,3 +11,15 @@ interface Message {
   data: string
   createdBy: User
 }
+
+interface Room {
+  id: string
+  chats: [Chat]
+}
+
+interface Chat {
+  id: string
+  message: Text
+  toUser: User
+  createdAt: string
+}

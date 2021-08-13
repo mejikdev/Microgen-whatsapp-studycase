@@ -42,7 +42,6 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [failed, setFailed] = useState(false)
 
-  // !TODO alert error
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setLoading(true)
     const { phoneNumber, phoneCode } = data

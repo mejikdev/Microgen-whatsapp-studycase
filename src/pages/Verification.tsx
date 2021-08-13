@@ -40,7 +40,6 @@ interface IFormInput {
   code: number
 }
 
-// !TODO input style
 const Verifcation: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
@@ -56,7 +55,6 @@ const Verifcation: React.FC = () => {
     }
   }, [phoneNumber, history])
 
-  // !TODO setCookie
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setLoading(true)
     verify({

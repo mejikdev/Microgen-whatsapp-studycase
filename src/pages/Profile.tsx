@@ -77,6 +77,7 @@ const Profile = (props: propsType): JSX.Element => {
     <div>
       <Title title={"Profile info"} description={"Please profide your name and an optional profile photo"} />
 
+      {/* !TODO upload avatar */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <div className={classes.inputImage}>
