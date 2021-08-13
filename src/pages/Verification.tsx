@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   resendGroup: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "15px 20px 0",
+    padding: "20px 45px 0",
   },
   resend: {
     display: "flex",
@@ -38,10 +38,6 @@ const useStyles = makeStyles({
 
 interface IFormInput {
   code: number
-}
-
-const initialValue = {
-  code: "",
 }
 
 // !TODO input style
@@ -75,7 +71,7 @@ const Verifcation: React.FC = () => {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         })
-        history.push("/setProfile")
+        window.location.href = "/setProfile"
       })
       .catch((err: Error) => {
         reset()
@@ -106,7 +102,7 @@ const Verifcation: React.FC = () => {
 
   return (
     <>
-      <Title title="Verify your phone number" description={Description()} />
+      <Title title="Verify your phone number" description={<Description />} />
       {/* !TODO input style */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container className={classes.inputSection}>
@@ -132,14 +128,16 @@ const Verifcation: React.FC = () => {
               alt="sms icon"
               className={classes.iconSms}
             />
-            <Typography variant="body1">Resend SMS</Typography>
+            <Typography variant="subtitle2" style={{ fontWeight: "bold" }}>
+              Resend SMS
+            </Typography>
           </div>
           <div>
             <Typography variant="subtitle1">1.00</Typography>
           </div>
         </div>
 
-        <Divider style={{ margin: "0px 20px", color: "red" }} />
+        <Divider style={{ margin: "0px 45px", color: "red" }} />
 
         <div className={classes.footer}>
           <Button

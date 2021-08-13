@@ -4,7 +4,7 @@ import React from "react"
 
 type propsType = {
   title: string
-  description: any
+  description: string | React.ReactNode
 }
 
 const useStyles = makeStyles({

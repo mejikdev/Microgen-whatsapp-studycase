@@ -5,7 +5,7 @@ import AlertMessage from "components/modal/AlertMessage"
 import Title from "components/Title"
 import { UserMutation } from "hooks/user"
 import React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom"
 
@@ -31,7 +31,12 @@ interface IFormInput {
   photo?: string
 }
 
-const Profile: React.FC = () => {
+type propsType = {
+  user?: User
+}
+
+const Profile = (props: propsType): JSX.Element => {
+  const { user } = props
   const classes = useStyles()
   const { changeProfile } = UserMutation()
   const history = useHistory()
@@ -57,6 +62,12 @@ const Profile: React.FC = () => {
         setLoading(false)
       })
   }
+
+  useEffect(() => {
+    if (user?.firstName) {
+      history.push("/")
+    }
+  }, [user?.firstName, history])
 
   if (loading) {
     return <AlertMessage loading={true} message="Saving profile ..." />

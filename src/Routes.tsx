@@ -45,7 +45,7 @@ function RouterProvider(): JSX.Element {
           <Verification />
         </Route>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/setProfile">
-          <Profile />
+          <Profile user={data?.user} />
         </PrivateRoute>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/">
           <div>autheticated user page</div>
