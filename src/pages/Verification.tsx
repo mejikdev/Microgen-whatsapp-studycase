@@ -75,7 +75,7 @@ const Verifcation: React.FC = () => {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         })
-        history.push("/")
+        history.push("/setProfile")
       })
       .catch((err: Error) => {
         reset()
