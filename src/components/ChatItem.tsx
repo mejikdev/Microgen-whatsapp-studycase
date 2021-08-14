@@ -74,10 +74,12 @@ type propsType = {
   title: string
   subtitle: string | Text
   time?: string
+  handleClick: (id: string) => void
+  id: string
 }
 
 const ChatItem = (props: propsType): JSX.Element => {
-  const { avatar, title, subtitle, time } = props
+  const { avatar, title, subtitle, time, handleClick, id } = props
   const classes = useStyles()
   return (
     <div style={{ cursor: "pointer" }}>
@@ -89,6 +91,7 @@ const ChatItem = (props: propsType): JSX.Element => {
           flex: 1,
           marginTop: "-1%",
         }}
+        onClick={() => handleClick(id)}
       >
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
           <Avatar

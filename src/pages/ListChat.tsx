@@ -5,6 +5,7 @@ import Header from "components/Header"
 import SplashScreen from "components/SplashScreen"
 import { ChatQuery } from "hooks/useChat"
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({
   parentHeader: {
@@ -43,8 +44,13 @@ const Title = (): JSX.Element => {
 const ListChat = (props: propsType): JSX.Element => {
   const { user } = props
   const classes = useStyles()
+  const history = useHistory()
   // !TODO usable variables
   const { data, loading } = ChatQuery({ id: user?.id })
+
+  const handleClick = (id: string) => {
+    history.push("/chat?id=" + id)
+  }
 
   if (loading) {
     return <SplashScreen />
@@ -62,10 +68,12 @@ const ListChat = (props: propsType): JSX.Element => {
         {/* !TODO show unread message */}
         {data?.rooms.map((room) => (
           <ChatItem
-            key={room.chats[0].id}
+            key={room.id}
+            id={room.id}
             title={room.chats[0].toUser.firstName}
             subtitle={room.chats[0].message}
             time={room.chats[0].createdAt}
+            handleClick={handleClick}
           />
         ))}
       </div>
