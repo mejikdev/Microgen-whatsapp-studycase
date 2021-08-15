@@ -3,10 +3,11 @@ import React from "react"
 
 type propsType = {
   title: string
+  disabled?: boolean
 }
 
 const Button = (props: propsType): JSX.Element => {
-  const { title } = props
+  const { title, disabled } = props
   return (
     <div
       style={{
@@ -18,7 +19,13 @@ const Button = (props: propsType): JSX.Element => {
         textAlign: "center",
       }}
     >
-      <ButtonMui type="submit" variant="contained" disableElevation style={{ background: "#46C655", color: "#FFFFFF" }}>
+      <ButtonMui
+        type="submit"
+        variant="contained"
+        disableElevation
+        style={{ background: "#46C655", color: "#FFFFFF" }}
+        disabled={disabled}
+      >
         {title}
       </ButtonMui>
     </div>
