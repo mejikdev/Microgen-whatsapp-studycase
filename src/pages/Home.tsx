@@ -41,7 +41,6 @@ const Home: React.FC = () => {
   const { login } = AuthMutation()
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>()
