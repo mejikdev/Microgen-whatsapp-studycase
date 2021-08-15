@@ -13,13 +13,9 @@ const query = {
     }
   `,
   changeProfile: gql`
-    mutation changeProfile($firstName: String) {
-      changeProfile(input: { firstName: $firstName }) {
+    mutation changeProfile($firstName: String, $avatar: Upload) {
+      changeProfile(input: { firstName: $firstName, avatar: $avatar }) {
         id
-        firstName
-        lastName
-        role
-        avatar
       }
     }
   `,
@@ -31,10 +27,6 @@ type UserQueryResult = QueryResult<
   },
   Record<string, User>
 >
-
-interface changeProfile {
-  name: string
-}
 
 function UserQuery(): UserQueryResult {
   return useQuery<{ user: User }>(query.checkLoggedIn)
