@@ -84,7 +84,7 @@ const ListChat = (props: propsType): JSX.Element => {
       </div>
 
       <div className={classes.startMessage}>
-        <Button>
+        <Button onClick={() => history.push("/contact")}>
           <img src={smsIconSvg} alt="sms icon" />
         </Button>
       </div>

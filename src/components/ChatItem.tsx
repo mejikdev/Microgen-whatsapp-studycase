@@ -72,7 +72,7 @@ const useStyles = makeStyles({
 type propsType = {
   avatar?: string
   title: string
-  subtitle: string | Text
+  subtitle?: string | Text
   time?: string
   handleClick: (id: string) => void
   id: string
@@ -115,14 +115,16 @@ const ChatItem = (props: propsType): JSX.Element => {
               </Typography>
             }
           />
-          <ListItemText
-            secondary={
-              <Typography className={classes.userMessage}>
-                {/* {data.chatMessage} */}
-                {subtitle}
-              </Typography>
-            }
-          />
+          {subtitle && (
+            <ListItemText
+              secondary={
+                <Typography className={classes.userMessage}>
+                  {/* {data.chatMessage} */}
+                  {subtitle}
+                </Typography>
+              }
+            />
+          )}
         </div>
         <ListItemText
           style={{
@@ -133,21 +135,23 @@ const ChatItem = (props: propsType): JSX.Element => {
             flexDirection: "column",
           }}
           primary={
-            <Typography className={classes.userTime}>
-              {/* {getTimeInFormat(data.chatTime)} */}
-              {moment(time).format("hh:mm")}
-            </Typography>
+            time && (
+              <Typography className={classes.userTime}>
+                {/* {getTimeInFormat(data.chatTime)} */}
+                {moment(time).format("hh:mm")}
+              </Typography>
+            )
           }
-          secondary={
-            <Avatar
-              className={
-                // item.chatUnreadCount != 0 ? classes.avatarStyle : classes.emptyAvatarStyle
-                classes.avatarStyle
-              }
-            >
-              <Typography className={classes.textMsgCount}>{/* {item.chatUnreadCount} */}1</Typography>
-            </Avatar>
-          }
+          // secondary={
+          //   <Avatar
+          //     className={
+          //       // item.chatUnreadCount != 0 ? classes.avatarStyle : classes.emptyAvatarStyle
+          //       classes.avatarStyle
+          //     }
+          //   >
+          //     <Typography className={classes.textMsgCount}>{/* {item.chatUnreadCount} */}1</Typography>
+          //   </Avatar>
+          // }
         />
       </ListItem>
     </div>

@@ -4,6 +4,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 
 import SplashScreen from "./components/SplashScreen"
 import Chat from "./pages/Chat"
+import Contact from "./pages/Contact"
 import Home from "./pages/Home"
 import ListChat from "./pages/ListChat"
 import Profile from "./pages/Profile"
@@ -52,6 +53,9 @@ function RouterProvider(): JSX.Element {
         </PrivateRoute>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/chat">
           <Chat user={data?.user} />
+        </PrivateRoute>
+        <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/contact">
+          <Contact user={data?.user} />
         </PrivateRoute>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/">
           <ListChat user={data?.user} />
