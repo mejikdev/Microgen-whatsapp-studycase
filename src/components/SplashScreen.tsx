@@ -1,6 +1,8 @@
 import { Typography } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { makeStyles } from "@material-ui/core/styles"
+import mgLogo from "assets/icons/mgLogo.png"
+import waIcon from "assets/icons/waIcon.png"
 import React from "react"
 
 const useStyles = makeStyles({
@@ -8,7 +10,7 @@ const useStyles = makeStyles({
     height: "100vh",
   },
   header: {
-    paddingTop: 156,
+    paddingTop: 146,
   },
   waIcon: {
     display: "block",
@@ -17,7 +19,11 @@ const useStyles = makeStyles({
     height: 100,
   },
   footer: {
-    marginTop: 396,
+    position: "absolute",
+    bottom: 30,
+    margin: "0px auto",
+    left: 0,
+    right: 0,
     textAlign: "center",
   },
   mgLogo: {
@@ -43,21 +49,13 @@ const SplashScreen = (): JSX.Element => {
       <CssBaseline />
       <div className={classes.root}>
         <div className={classes.header}>
-          <img
-            src={process.env.REACT_APP_FRONTEND_URL + "/icon/waIcon.png"}
-            className={classes.waIcon}
-            alt="logo whatsapp"
-          />
+          <img src={waIcon} className={classes.waIcon} alt="logo whatsapp" />
           <Typography variant="h5" align="center" className={classes.headerTitle}>
             Whatsapp Clone
           </Typography>
         </div>
         <div className={classes.footer}>
-          <img
-            src={process.env.REACT_APP_FRONTEND_URL + "/icon/mgLogo.png"}
-            className={classes.mgLogo}
-            alt="logo microgen"
-          />
+          <img src={mgLogo} className={classes.mgLogo} alt="logo microgen" />
           <Typography variant="caption" align="center">
             created with
           </Typography>
