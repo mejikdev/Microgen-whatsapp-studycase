@@ -1,5 +1,7 @@
 import { Button, Divider, Grid, TextField, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import smsIcon from "assets/icons/smsIcon.png"
+import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
@@ -43,8 +45,10 @@ interface IFormInput {
 const Verifcation: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
-  const { verify } = AuthMutation()
+  const { verify, login } = AuthMutation()
   const [loading, setLoading] = useState(false)
+  const [loadingResend, setLoadingResend] = useState(false)
+  const [seconds, setSeconds] = React.useState(60)
   const [failed, setFailed] = useState<any>(false)
   const phoneNumber = localStorage.getItem("phoneNumber")
   const { register, reset, handleSubmit } = useForm<IFormInput>()
@@ -54,6 +58,12 @@ const Verifcation: React.FC = () => {
       history.push("/public")
     }
   }, [phoneNumber, history])
+
+  useEffect(() => {
+    if (seconds > 0) {
+      setTimeout(() => setSeconds(seconds - 1), 1000)
+    }
+  }, [seconds])
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setLoading(true)
@@ -86,6 +96,10 @@ const Verifcation: React.FC = () => {
     return <AlertMessage message="Verifying ..." />
   }
 
+  if (loadingResend) {
+    return <AlertMessage message="Sending ..." />
+  }
+
   if (failed) {
     return <AlertMessage message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
   }
@@ -93,9 +107,30 @@ const Verifcation: React.FC = () => {
   const Description = (): JSX.Element => {
     return (
       <div>
-        Waiting to automatically detect as SMS sent to {phoneNumber}. <Link to="/public">Wrong number ?</Link>
+        Waiting to automatically detect as SMS sent to {phoneNumber}.{" "}
+        <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
+          Wrong number ?
+        </Link>
       </div>
     )
+  }
+
+  const handleResendCode = async () => {
+    setLoadingResend(true)
+    login({
+      variables: {
+        phoneNumber: phoneNumber,
+      },
+    })
+      .then(() => {
+        console.log("res")
+        setLoadingResend(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoadingResend(false)
+        setFailed(true)
+      })
   }
 
   return (
@@ -120,33 +155,18 @@ const Verifcation: React.FC = () => {
         </Grid>
 
         <div className={classes.resendGroup}>
-          <div className={classes.resend}>
-            <img
-              src={process.env.REACT_APP_FRONTEND_URL + "/icon/smsIcon.png"}
-              alt="sms icon"
-              className={classes.iconSms}
-            />
-            <Typography variant="subtitle2" style={{ fontWeight: "bold" }}>
-              Resend SMS
-            </Typography>
-          </div>
+          <Button className={classes.resend} onClick={() => handleResendCode()} disabled={Boolean(seconds)}>
+            <img src={smsIcon} alt="sms icon" className={classes.iconSms} />
+            <Typography variant="subtitle2">Resend SMS</Typography>
+          </Button>
           <div>
-            <Typography variant="subtitle1">1.00</Typography>
+            <Typography variant="subtitle1">{seconds}</Typography>
           </div>
         </div>
 
         <Divider style={{ margin: "0px 45px", color: "red" }} />
 
-        <div className={classes.footer}>
-          <Button
-            type="submit"
-            variant="contained"
-            disableElevation
-            style={{ background: "#46C655", color: "#FFFFFF" }}
-          >
-            Verify
-          </Button>
-        </div>
+        <ButtonCustom title="Verify" />
       </form>
     </>
   )
