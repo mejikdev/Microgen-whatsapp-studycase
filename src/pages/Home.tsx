@@ -1,5 +1,6 @@
-import { Button, Grid, InputAdornment, TextField } from "@material-ui/core"
+import { Grid, InputAdornment, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
@@ -116,16 +117,7 @@ const Home: React.FC = () => {
             <TextField id="standard-select-currency-native" type="number" fullWidth {...register("phoneNumber")} />
           </Grid>
         </Grid>
-        <div className={classes.footer}>
-          <Button
-            type="submit"
-            variant="contained"
-            disableElevation
-            style={{ background: "#46C655", color: "#FFFFFF" }}
-          >
-            Next
-          </Button>
-        </div>
+        <ButtonCustom title="Next" />
       </form>
     </div>
   )
