@@ -1,10 +1,11 @@
 import { Button, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import SplashScreen from "components/SplashScreen"
 import { ChatQuery } from "hooks/useChat"
-import React from "react"
+import React, { useEffect } from "react"
 import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({
@@ -48,15 +49,19 @@ const ListChat = (props: propsType): JSX.Element => {
   // !TODO usable variables
   const { data, loading } = ChatQuery({ id: user?.id })
 
-  const handleClick = (id: string) => {
-    history.push("/chat?id=" + id)
-  }
+  useEffect(() => {
+    if (!user?.firstName) {
+      history.push("setProfile")
+    }
+  }, [user, history])
 
   if (loading) {
     return <SplashScreen />
   }
 
-  console.log(data)
+  const handleClick = (id: string) => {
+    history.push("/chat?id=" + id)
+  }
 
   return (
     <>
@@ -80,7 +85,7 @@ const ListChat = (props: propsType): JSX.Element => {
 
       <div className={classes.startMessage}>
         <Button>
-          <img src={process.env.REACT_APP_FRONTEND_URL + "/icon/sms.svg"} alt="sms icon" />
+          <img src={smsIconSvg} alt="sms icon" />
         </Button>
       </div>
     </>
