@@ -39,7 +39,12 @@ const Home: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const { login } = AuthMutation()
-  const { register, handleSubmit } = useForm<IFormInput>()
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>()
   const [loading, setLoading] = useState(false)
   const [failed, setFailed] = useState(false)
 
@@ -114,7 +119,13 @@ const Home: React.FC = () => {
             />
           </Grid>
           <Grid item xs={5}>
-            <TextField id="standard-select-currency-native" type="number" fullWidth {...register("phoneNumber")} />
+            <TextField
+              id="standard-select-currency-native"
+              type="number"
+              fullWidth
+              {...register("phoneNumber", { required: true })}
+            />
+            {errors.phoneNumber && <span style={{ fontSize: 12, color: "red" }}>Phone number required !</span>}
           </Grid>
         </Grid>
         <ButtonCustom title="Next" />
