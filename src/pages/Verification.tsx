@@ -51,7 +51,12 @@ const Verifcation: React.FC = () => {
   const [seconds, setSeconds] = React.useState(60)
   const [failed, setFailed] = useState<any>(false)
   const phoneNumber = localStorage.getItem("phoneNumber")
-  const { register, reset, handleSubmit } = useForm<IFormInput>()
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>()
 
   useEffect(() => {
     if (!phoneNumber) {
@@ -143,13 +148,17 @@ const Verifcation: React.FC = () => {
             <TextField
               id="standard-select-currency-native"
               helperText={
-                <Typography variant="caption" style={{ textAlign: "center" }} display="block">
-                  Enter 6 digit code
-                </Typography>
+                errors.code ? (
+                  <span style={{ fontSize: 12, color: "red" }}>Code verification required</span>
+                ) : (
+                  <Typography variant="caption" style={{ textAlign: "center" }} display="block">
+                    Enter 6 digit code
+                  </Typography>
+                )
               }
               type="number"
               fullWidth
-              {...register("code")}
+              {...register("code", { required: true })}
             />
           </Grid>
         </Grid>
