@@ -15,11 +15,15 @@ interface Message {
 interface Room {
   id: string
   chats: [Chat]
+  users: [User]
 }
 
 interface Chat {
   id: string
+  room: Room
   message: Text
-  toUser: User
+  file: string
+  sender: User
+  recipient: User
   createdAt: string
 }

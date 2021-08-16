@@ -3,21 +3,23 @@ import { gql } from "graphql-tag"
 
 const query = {
   getChats: gql`
-    query getChatsByRoom($userId: String) {
-      rooms {
+    query getListChat($userId: String) {
+      rooms(where: { peopleId: $userId }) {
         id
-        chats(or: [{ toUserId: $userId }, { createdBy: { id: $userId } }], orderBy: createdAt_DESC) {
+        chats(orderBy: createdAt_DESC, limit: 1) {
           id
           message
-          createdAt
-          toUser {
+          sender {
             id
             firstName
+            avatar
           }
-          createdBy {
+          recipient {
             id
             firstName
+            avatar
           }
+          file
         }
       }
     }

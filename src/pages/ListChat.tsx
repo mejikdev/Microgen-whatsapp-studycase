@@ -75,8 +75,15 @@ const ListChat = (props: propsType): JSX.Element => {
           <ChatItem
             key={room.id}
             id={room.id}
-            title={room.chats[0].toUser.firstName}
+            title={
+              room.chats[0]?.sender.id === user?.id
+                ? room.chats[0]?.recipient?.firstName
+                : room.chats[0]?.sender.firstName
+            }
             subtitle={room.chats[0].message}
+            avatar={
+              room.chats[0]?.sender.id === user?.id ? room.chats[0]?.recipient?.avatar : room.chats[0]?.sender.avatar
+            }
             time={room.chats[0].createdAt}
             handleClick={handleClick}
           />

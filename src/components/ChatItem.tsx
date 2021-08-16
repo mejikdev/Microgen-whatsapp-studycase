@@ -94,11 +94,7 @@ const ChatItem = (props: propsType): JSX.Element => {
         onClick={() => handleClick(id)}
       >
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
-          <Avatar
-            alt="Aqil"
-            src={process.env.REACT_FRONTEND_URL + "/icon/waIcon.png"}
-            className={classes.profileImage}
-          />
+          <Avatar alt={title} src={avatar} className={classes.profileImage} />
         </ListItemAvatar>
         <div
           style={{
