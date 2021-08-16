@@ -2,14 +2,15 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mat
 import { makeStyles } from "@material-ui/core/styles"
 import moment from "moment"
 import React from "react"
+import { DARK_GREEN_SECOND, GREY, LIGHT_GREEN_SECOND, WHITE } from "utils/colors"
 
 const useStyles = makeStyles({
   parentHeader: {
     display: "flex",
     justifyContent: "start",
     padding: "20px 15px",
-    backgroundColor: "#075E55",
-    color: "#FFFFFF",
+    backgroundColor: DARK_GREEN_SECOND,
+    color: WHITE,
   },
   profileImage: {
     width: 50,
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
   },
   userMessage: {
     fontSize: 14,
-    color: "#87888A",
+    color: GREY,
     marginTop: -8,
     width: 280,
     alignSelf: "flex-start",
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   userTime: {
     fontSize: 12,
     marginTop: 6,
-    color: "#87888A",
+    color: GREY,
     alignSelf: "flex-end",
   },
   avatarStyle: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
     padding: 6,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#00C854",
+    backgroundColor: LIGHT_GREEN_SECOND,
   },
   emptyAvatarStyle: {
     fontSize: 8,
@@ -58,11 +59,11 @@ const useStyles = makeStyles({
     padding: 6,
     justifyContent: "center",
     alignSelf: "center",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: WHITE,
   },
   textMsgCount: {
     fontSize: 10,
-    color: "#FFFFFF",
+    color: WHITE,
     fontWeight: "bold",
     justifyContent: "center",
     alignSelf: "center",

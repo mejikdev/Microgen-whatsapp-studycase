@@ -1,5 +1,6 @@
 import { Button as ButtonMui } from "@material-ui/core"
 import React from "react"
+import { LIGHT_GREEN, WHITE } from "utils/colors"
 
 type propsType = {
   title: string
@@ -23,7 +24,7 @@ const Button = (props: propsType): JSX.Element => {
         type="submit"
         variant="contained"
         disableElevation
-        style={{ background: "#46C655", color: "#FFFFFF" }}
+        style={{ background: LIGHT_GREEN, color: WHITE }}
         disabled={disabled}
       >
         {title}

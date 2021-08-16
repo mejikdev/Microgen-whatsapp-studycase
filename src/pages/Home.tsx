@@ -2,6 +2,7 @@ import { Grid, InputAdornment, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
+import SpanError from "components/SpanError"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
 import React, { useState } from "react"
@@ -42,6 +43,7 @@ const Home: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<IFormInput>()
   const [loading, setLoading] = useState(false)
@@ -59,11 +61,13 @@ const Home: React.FC = () => {
       .then(() => {
         setLoading(false)
         localStorage.setItem("phoneNumber", fullPhoneNumber)
+        reset()
         history.push("/verification")
       })
       .catch((err) => {
         setLoading(false)
         setFailed(true)
+        reset()
       })
   }
 
@@ -124,7 +128,7 @@ const Home: React.FC = () => {
               fullWidth
               {...register("phoneNumber", { required: true })}
             />
-            {errors.phoneNumber && <span style={{ fontSize: 12, color: "red" }}>Phone number required !</span>}
+            {errors.phoneNumber && <SpanError title="Please enter your phone number!" />}
           </Grid>
         </Grid>
         <ButtonCustom title="Next" />

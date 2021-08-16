@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import smsIcon from "assets/icons/smsIcon.png"
 import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
+import SpanError from "components/SpanError"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
 import { setCookie } from "nookies"
@@ -149,7 +150,7 @@ const Verifcation: React.FC = () => {
               id="standard-select-currency-native"
               helperText={
                 errors.code ? (
-                  <span style={{ fontSize: 12, color: "red" }}>Code verification required</span>
+                  <SpanError title="Please input verification code!" />
                 ) : (
                   <Typography variant="caption" style={{ textAlign: "center" }} display="block">
                     Enter 6 digit code

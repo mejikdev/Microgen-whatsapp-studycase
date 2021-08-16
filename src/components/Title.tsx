@@ -1,6 +1,7 @@
 import { Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import React from "react"
+import { DARK_GREEN } from "utils/colors"
 
 type propsType = {
   title: string
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     paddingBottom: 15,
     fontSize: 20,
-    color: "#55988D",
+    color: DARK_GREEN,
   },
   description: {
     fontSize: 12,
