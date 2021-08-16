@@ -4,7 +4,7 @@ import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import SplashScreen from "components/SplashScreen"
-import { ChatQuery } from "hooks/useChat"
+import { ChatQuery } from "hooks/listChat"
 import React, { useEffect } from "react"
 import { useHistory } from "react-router-dom"
 
@@ -60,7 +60,7 @@ const ListChat = (props: propsType): JSX.Element => {
   }
 
   const handleClick = (id: string) => {
-    history.push("/chat?id=" + id)
+    history.push("/chat?roomId=" + id)
   }
 
   return (
@@ -85,7 +85,7 @@ const ListChat = (props: propsType): JSX.Element => {
               room.chats[0]?.sender.id === user?.id ? room.chats[0]?.recipient?.avatar : room.chats[0]?.sender.avatar
             }
             time={room.chats[0].createdAt}
-            handleClick={handleClick}
+            handleClick={() => handleClick(room.id)}
           />
         ))}
       </div>
