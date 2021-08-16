@@ -4,6 +4,7 @@ interface User {
   firstName: string
   role: string
   avatar: string
+  phoneNumber: string
 }
 
 interface Message {

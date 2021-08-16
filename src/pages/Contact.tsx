@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
+import { UsersQuery } from "hooks/useContact"
 import React from "react"
 import { useHistory } from "react-router-dom"
 
@@ -43,6 +44,7 @@ const Title = (): JSX.Element => {
 
 const Chat = (props: propsType): JSX.Element => {
   const { user } = props
+  const { data, loading } = UsersQuery(user?.id)
   const classes = useStyles()
 
   return (
@@ -50,13 +52,16 @@ const Chat = (props: propsType): JSX.Element => {
       <Header child={<Title />} />
 
       <div>
-        <ChatItem
-          key={"1"}
-          id={"1"}
-          title={"Zainal"}
-          subtitle={"+628122433038"}
-          handleClick={() => console.log("tes")}
-        />
+        {data?.users.map((u) => (
+          <ChatItem
+            key={u.id}
+            id={u.id}
+            title={u.firstName}
+            subtitle={u.phoneNumber}
+            avatar={u.avatar}
+            handleClick={() => console.log("tes")}
+          />
+        ))}
       </div>
     </>
   )
