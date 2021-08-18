@@ -66,7 +66,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
     changeProfile({
       variables: {
         firstName: name,
-        avatar: fileInput,
+        avatar: Object.keys(fileInput).length !== 0 ? fileInput : "",
       },
     })
       .then(() => {
@@ -93,7 +93,6 @@ const Profile = (props: ProfileProps): JSX.Element => {
     <Box>
       <Title title={"Profile info"} description={"Please profide your name and an optional profile photo"} />
 
-      {/* !TODO upload avatar */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box>
           <Box className={classes.inputImage}>
