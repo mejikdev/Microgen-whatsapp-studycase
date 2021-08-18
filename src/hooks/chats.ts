@@ -1,4 +1,12 @@
-import { QueryHookOptions, QueryResult, useMutation, useQuery } from "@apollo/react-hooks"
+import {
+  MutationResult,
+  QueryHookOptions,
+  QueryResult,
+  SubscriptionHookOptions,
+  useMutation,
+  useQuery,
+  useSubscription,
+} from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 
 const query = {
@@ -45,6 +53,16 @@ const query = {
       }
     }
   `,
+  subcriptionChat: gql`
+    subscription MessageAdded($conversationId: String) {
+      messageAdded(where: { conversationId: $conversationId }) {
+        id
+        text
+        file
+        createdAt
+      }
+    }
+  `,
 }
 
 type ChatQueryResult = QueryResult<
@@ -53,14 +71,6 @@ type ChatQueryResult = QueryResult<
   },
   Record<string, User>
 >
-
-// !TODO fix it hardcode in variables
-function ChatQuery({ id }: any): ChatQueryResult {
-  const chats = useQuery<{ conversation: Conversation }>(query.getChat, {
-    variables: { conversationId: id || "611c7ca016c0b50033bac416" },
-  })
-  return chats
-}
 
 function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
   const chats = useQuery<{ conversation: Conversation }>(query.getChat, options)
@@ -72,4 +82,9 @@ function ChatMutation() {
   return { sendChat }
 }
 
-export { ChatMutation, ChatQuery, ChatsQuery }
+function ChatSubcription(options: SubscriptionHookOptions) {
+  const chatSub = useSubscription<{ messageAdded: Message }>(query.subcriptionChat, options)
+  return chatSub
+}
+
+export { ChatMutation, ChatsQuery, ChatSubcription }

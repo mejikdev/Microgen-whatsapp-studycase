@@ -1,5 +1,6 @@
 import { Box, Card, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import moment from "moment"
 import React from "react"
 import { FONT_INPUT, GREY_SECOND } from "utils/colors"
 
@@ -36,13 +37,19 @@ const useStyles = makeStyles({
   },
 })
 
-const ChatTextRight = (): JSX.Element => {
+type ChatTextRightProps = {
+  message: string
+  createdAt?: string
+}
+
+const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
+  const { message, createdAt } = props
   const classes = useStyles()
   return (
     <Box className={classes.parentView}>
       <Card className={classes.cardView} variant={"elevation"} elevation={0.9}>
-        <Typography className={classes.userMessage}>left</Typography>
-        <Typography className={classes.userTime}>21</Typography>
+        <Typography className={classes.userMessage}>{message}</Typography>
+        <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
       </Card>
     </Box>
   )

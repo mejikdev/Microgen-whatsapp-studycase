@@ -43,7 +43,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
   const history = useHistory()
   const [loading, setLoading] = useState(false)
   const [fileInput, setFileInput] = useState<any>({})
-  const [fileUrl, setFileUrl] = useState<any>("")
+  const [fileUrl, setFileUrl] = useState<string>("")
   const {
     register,
     handleSubmit,
