@@ -14,14 +14,14 @@ const Transition = React.forwardRef(function Transition(props: TransitionProps, 
 })
 
 type AlertMessageProps = {
+  open?: boolean
   loading?: boolean
   message: string
   action?: () => void
 }
 
 const AlertMessage = (props: AlertMessageProps): JSX.Element => {
-  const { message, loading, action } = props
-  const open = true
+  const { open = true, message, loading, action } = props
   return (
     <Dialog
       open={open}

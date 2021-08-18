@@ -100,15 +100,15 @@ const Verifcation: React.FC = () => {
   }
 
   if (loading) {
-    return <AlertMessage message="Verifying ..." />
+    return <AlertMessage open={true} message="Verifying ..." />
   }
 
   if (loadingResend) {
-    return <AlertMessage message="Sending ..." />
+    return <AlertMessage open={true} message="Sending ..." />
   }
 
   if (failed) {
-    return <AlertMessage message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
+    return <AlertMessage open={true} message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
   }
 
   const Description = (): JSX.Element => {

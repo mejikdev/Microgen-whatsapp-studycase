@@ -72,11 +72,11 @@ const Login: React.FC = () => {
   }
 
   if (loading) {
-    return <AlertMessage loading={true} message="Connecting ..." />
+    return <AlertMessage open={true} loading={true} message="Connecting ..." />
   }
 
   if (failed) {
-    return <AlertMessage message="Something Wrong!" action={() => setFailed(false)} />
+    return <AlertMessage open={true} message="Something Wrong!" action={() => setFailed(false)} />
   }
 
   return (

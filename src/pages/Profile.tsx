@@ -57,7 +57,7 @@ const Profile = (props: propsType): JSX.Element => {
   }, [user?.firstName, history])
 
   if (loading) {
-    return <AlertMessage loading={true} message="Saving profile ..." />
+    return <AlertMessage open={true} loading={true} message="Saving profile ..." />
   }
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
