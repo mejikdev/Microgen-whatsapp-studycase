@@ -3,10 +3,8 @@ import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 
 import SplashScreen from "./components/SplashScreen"
-import Chat from "./pages/Chat"
-import Contact from "./pages/Contact"
-import Home from "./pages/Home"
-import ListChat from "./pages/ListChat"
+import Home from "./pages/chat/Home"
+import Login from "./pages/Login"
 import Profile from "./pages/Profile"
 import Verification from "./pages/Verification"
 
@@ -43,7 +41,7 @@ function RouterProvider(): JSX.Element {
     <BrowserRouter>
       <Switch>
         <Route exact path="/public">
-          <Home />
+          <Login />
         </Route>
         <Route exact path="/verification">
           <Verification />
@@ -51,14 +49,8 @@ function RouterProvider(): JSX.Element {
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/setProfile">
           <Profile user={data?.user} />
         </PrivateRoute>
-        <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/chat">
-          <Chat user={data?.user} />
-        </PrivateRoute>
-        <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/contact">
-          <Contact user={data?.user} />
-        </PrivateRoute>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/">
-          <ListChat user={data?.user} />
+          <Home user={data?.user} />
         </PrivateRoute>
       </Switch>
     </BrowserRouter>

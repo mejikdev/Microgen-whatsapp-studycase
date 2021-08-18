@@ -36,7 +36,7 @@ interface IFormInput {
   phoneNumber: number
 }
 
-const Home: React.FC = () => {
+const Login: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const { login } = AuthMutation()
@@ -137,4 +137,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default Login

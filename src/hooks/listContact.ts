@@ -3,7 +3,7 @@ import { gql } from "graphql-tag"
 const query = {
   getContact: gql`
     query getContact($userId: String) {
-      users(where: { id_not: $userId, role: AUTHENTICATED }) {
+      users(where: { id_not: $userId, role: AUTHENTICATED, firstName_not: "", phoneNumber_not: null }) {
         id
         firstName
         phoneNumber
@@ -20,8 +20,9 @@ type UsersQueryResult = QueryResult<
   Record<string, User>
 >
 
+// !TODO fix it hardcode in variables
 function UsersQuery(id: any): UsersQueryResult {
-  return useQuery<{ users: [User] }>(query.getContact, { variables: { userId: id } })
+  return useQuery<{ users: [User] }>(query.getContact, { variables: { userId: id || "61169240afe16600347a0f0b" } })
 }
 
 export { UsersQuery }

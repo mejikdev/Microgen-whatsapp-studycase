@@ -7,24 +7,18 @@ interface User {
   phoneNumber: string
 }
 
+interface Conversation {
+  id: string
+  name: string
+  messages: [Message]
+  people: [User]
+}
+
 interface Message {
   id: string
-  data: string
-  createdBy: User
-}
-
-interface Room {
-  id: string
-  chats: [Chat]
-  users: [User]
-}
-
-interface Chat {
-  id: string
-  room: Room
-  message: Text
+  text: string
   file: string
-  sender: User
   recipient: User
+  createdBy: User
   createdAt: string
 }

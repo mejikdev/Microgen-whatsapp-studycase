@@ -2,16 +2,9 @@ import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@mat
 import { makeStyles } from "@material-ui/core/styles"
 import moment from "moment"
 import React from "react"
-import { DARK_GREEN_SECOND, GREY, LIGHT_GREEN_SECOND, WHITE } from "utils/colors"
+import { GREY, LIGHT_GREEN_SECOND, WHITE } from "utils/colors"
 
 const useStyles = makeStyles({
-  parentHeader: {
-    display: "flex",
-    justifyContent: "start",
-    padding: "20px 15px",
-    backgroundColor: DARK_GREEN_SECOND,
-    color: WHITE,
-  },
   profileImage: {
     width: 50,
     height: 50,
@@ -71,16 +64,15 @@ const useStyles = makeStyles({
 })
 
 type propsType = {
-  avatar?: string
-  title: string
-  subtitle?: string | Text
-  time?: string
-  handleClick: (id: string) => void
-  id: string
+  userName: string
+  userAvatar?: string
+  userMessage: string
+  userTime?: string
+  unreadMessage?: number
 }
 
 const ChatItem = (props: propsType): JSX.Element => {
-  const { avatar, title, subtitle, time, handleClick, id } = props
+  const { userName, userAvatar, userMessage, userTime, unreadMessage } = props
   const classes = useStyles()
   return (
     <div style={{ cursor: "pointer" }}>
@@ -92,10 +84,9 @@ const ChatItem = (props: propsType): JSX.Element => {
           flex: 1,
           marginTop: "-1%",
         }}
-        onClick={() => handleClick(id)}
       >
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
-          <Avatar alt={title} src={avatar} className={classes.profileImage} />
+          <Avatar alt={userName} src={userAvatar} className={classes.profileImage} />
         </ListItemAvatar>
         <div
           style={{
@@ -104,23 +95,9 @@ const ChatItem = (props: propsType): JSX.Element => {
             flex: 0.7,
           }}
         >
-          <ListItemText
-            primary={
-              <Typography className={classes.userName}>
-                {/* {userType == webConstants.FRIEND ? data.userName : data.chatName} */}
-                {title}
-              </Typography>
-            }
-          />
-          {subtitle && (
-            <ListItemText
-              secondary={
-                <Typography className={classes.userMessage}>
-                  {/* {data.chatMessage} */}
-                  {subtitle}
-                </Typography>
-              }
-            />
+          <ListItemText primary={<Typography className={classes.userName}>{userName}</Typography>} />
+          {userMessage && (
+            <ListItemText secondary={<Typography className={classes.userMessage}>{userMessage}</Typography>} />
           )}
         </div>
         <ListItemText
@@ -131,24 +108,14 @@ const ChatItem = (props: propsType): JSX.Element => {
             alignItems: "flex-end",
             flexDirection: "column",
           }}
-          primary={
-            time && (
-              <Typography className={classes.userTime}>
-                {/* {getTimeInFormat(data.chatTime)} */}
-                {moment(time).format("hh:mm")}
-              </Typography>
+          primary={userTime && <Typography className={classes.userTime}>{moment(userTime).format("hh:mm")}</Typography>}
+          secondary={
+            unreadMessage && (
+              <Avatar className={unreadMessage >= 0 ? classes.avatarStyle : classes.emptyAvatarStyle}>
+                <Typography className={classes.textMsgCount}>{unreadMessage}</Typography>
+              </Avatar>
             )
           }
-          // secondary={
-          //   <Avatar
-          //     className={
-          //       // item.chatUnreadCount != 0 ? classes.avatarStyle : classes.emptyAvatarStyle
-          //       classes.avatarStyle
-          //     }
-          //   >
-          //     <Typography className={classes.textMsgCount}>{/* {item.chatUnreadCount} */}1</Typography>
-          //   </Avatar>
-          // }
         />
       </ListItem>
     </div>

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
-import { UsersQuery } from "hooks/useContact"
+import { UsersQuery } from "hooks/listContact"
 import React from "react"
 import { useHistory } from "react-router-dom"
 
@@ -22,9 +22,15 @@ const useStyles = makeStyles({
 
 type propsType = {
   user?: User
+  setMode: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Title = (): JSX.Element => {
+type titleProps = {
+  setMode: React.Dispatch<React.SetStateAction<string>>
+}
+
+const Title = (props: titleProps): JSX.Element => {
+  const { setMode } = props
   const classes = useStyles()
   const history = useHistory()
 
@@ -32,7 +38,7 @@ const Title = (): JSX.Element => {
     <>
       <div className={classes.parentView}>
         <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
-          <IconButton onClick={() => history.push("/")} style={{ padding: 0 }}>
+          <IconButton onClick={() => setMode("LISTCHAT")} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: "#FFFFFF" }} />
           </IconButton>
         </div>
@@ -42,29 +48,22 @@ const Title = (): JSX.Element => {
   )
 }
 
-const Chat = (props: propsType): JSX.Element => {
-  const { user } = props
+const ListContact = (props: propsType): JSX.Element => {
+  const { user, setMode } = props
   const { data, loading } = UsersQuery(user?.id)
   const classes = useStyles()
 
   return (
     <>
-      <Header child={<Title />} />
+      <Header child={<Title setMode={setMode} />} />
 
       <div>
         {data?.users.map((u) => (
-          <ChatItem
-            key={u.id}
-            id={u.id}
-            title={u.firstName}
-            subtitle={u.phoneNumber}
-            avatar={u.avatar}
-            handleClick={() => console.log("tes")}
-          />
+          <ChatItem key={u.id} userName={u.firstName} userMessage={u.phoneNumber} userAvatar={u.avatar} />
         ))}
       </div>
     </>
   )
 }
 
-export default Chat
+export default ListContact

@@ -3,39 +3,44 @@ import { gql } from "graphql-tag"
 
 const query = {
   getChats: gql`
-    query getListChat($userId: String) {
-      rooms(where: { peopleId: $userId }) {
+    query listChat($userId: String) {
+      conversations(where: { peopleId: $userId }) {
         id
-        chats(orderBy: createdAt_DESC, limit: 1) {
+        name
+        messages(limit: 1, orderBy: createdAt_DESC) {
           id
-          message
-          sender {
-            id
-            firstName
-            avatar
-          }
+          text
+          file
           recipient {
             id
             firstName
             avatar
           }
-          file
+          createdBy {
+            id
+            firstName
+            avatar
+          }
+          createdAt
         }
       }
     }
   `,
 }
 
-type ChatQueryResult = QueryResult<
+type ListChatsQueryResult = QueryResult<
   {
-    rooms: [Room]
+    conversations: [Conversation]
   },
   Record<string, User>
 >
 
-function ChatQuery({ id }: any): ChatQueryResult {
-  const chats = useQuery<{ rooms: [Room] }>(query.getChats, { variables: { userId: id } })
-  return chats
+// !TODO fix it hardcode in variables
+function ListChatsQuery({ id }: any): ListChatsQueryResult {
+  const Listchats = useQuery<{ conversations: [Conversation] }>(query.getChats, {
+    variables: { userId: id || "61169240afe16600347a0f0b" },
+  })
+  return Listchats
 }
 
-export { ChatQuery }
+export { ListChatsQuery }
