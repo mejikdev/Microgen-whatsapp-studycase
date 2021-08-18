@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
+import LoadingProgress from "components/LoadingProgress"
 import { UsersQuery } from "hooks/listContact"
 import React from "react"
 import { useHistory } from "react-router-dom"
@@ -51,17 +52,20 @@ const Title = (props: titleProps): JSX.Element => {
 const ListContact = (props: propsType): JSX.Element => {
   const { user, setMode } = props
   const { data, loading } = UsersQuery(user?.id)
-  const classes = useStyles()
 
   return (
     <>
       <Header child={<Title setMode={setMode} />} />
 
-      <div>
-        {data?.users.map((u) => (
-          <ChatItem key={u.id} userName={u.firstName} userMessage={u.phoneNumber} userAvatar={u.avatar} />
-        ))}
-      </div>
+      {/* <div> */}
+      {/* {loading ? (
+          <LoadingProgress />
+        ) : (
+          data?.users.map((u) => (
+            // <ChatItem key={u.id} userName={u.firstName} userMessage={u.phoneNumber} userAvatar={u.avatar} />
+          ))
+        )}
+      </div> */}
     </>
   )
 }

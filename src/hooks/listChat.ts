@@ -23,6 +23,11 @@ const query = {
           }
           createdAt
         }
+        people(where: { id_not: $userId }) {
+          id
+          firstName
+          avatar
+        }
       }
     }
   `,

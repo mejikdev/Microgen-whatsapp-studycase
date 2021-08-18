@@ -69,10 +69,14 @@ type propsType = {
   userMessage: string
   userTime?: string
   unreadMessage?: number
+  recipient?: User
+  conversationId?: string
+  handleOpenChat: (conversationId?: string, recipient?: User) => void
 }
 
 const ChatItem = (props: propsType): JSX.Element => {
-  const { userName, userAvatar, userMessage, userTime, unreadMessage } = props
+  const { userName, userAvatar, userMessage, userTime, unreadMessage, recipient, conversationId, handleOpenChat } =
+    props
   const classes = useStyles()
   return (
     <div style={{ cursor: "pointer" }}>
@@ -84,6 +88,7 @@ const ChatItem = (props: propsType): JSX.Element => {
           flex: 1,
           marginTop: "-1%",
         }}
+        onClick={() => handleOpenChat(conversationId, recipient)}
       >
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
           <Avatar alt={userName} src={userAvatar} className={classes.profileImage} />

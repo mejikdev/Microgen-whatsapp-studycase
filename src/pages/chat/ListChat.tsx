@@ -3,10 +3,9 @@ import { makeStyles } from "@material-ui/core/styles"
 import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
-import SplashScreen from "components/SplashScreen"
+import LoadingProgress from "components/LoadingProgress"
 import { ListChatsQuery } from "hooks/listChat"
 import React from "react"
-import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({
   startMessage: {
@@ -25,7 +24,7 @@ const useStyles = makeStyles({
 
 type propsType = {
   user?: User
-  setMode: React.Dispatch<React.SetStateAction<string>>
+  handleOpenChat: (conversationId?: string, recipient?: User) => void
 }
 
 const Title = (): JSX.Element => {
@@ -38,34 +37,35 @@ const Title = (): JSX.Element => {
 
 /* !TODO show unread message */
 const ListChat = (props: propsType): JSX.Element => {
-  const { user, setMode } = props
+  const { user, handleOpenChat } = props
   const { data, loading } = ListChatsQuery(user?.id)
   const classes = useStyles()
-  const history = useHistory()
-
-  const handleClick = (id: string) => {
-    history.push("/chat?roomId=" + id)
-  }
-
-  if (loading) {
-    return <SplashScreen />
-  }
-
-  console.log("data", data)
 
   return (
     <>
       <Header child={<Title />} />
 
       <div>
-        {data &&
-          data?.conversations.map((conversation) => (
-            <ChatItem key={conversation.id} userName={"Zainal pdi"} userMessage="afaf" userAvatar="afaf" />
-          ))}
+        {loading ? (
+          <LoadingProgress />
+        ) : (
+          data?.conversations.map((conversation: Conversation) => (
+            <ChatItem
+              key={conversation.id}
+              conversationId={conversation.id}
+              userName={conversation.people[0].firstName}
+              userMessage={conversation.messages[0].text}
+              userAvatar={conversation.people[0].avatar}
+              userTime={conversation.messages[0].createdAt}
+              recipient={conversation.people[0]}
+              handleOpenChat={handleOpenChat}
+            />
+          ))
+        )}
       </div>
 
       <div className={classes.startMessage}>
-        <Button onClick={() => setMode("LISTCONTACT")}>
+        <Button onClick={() => console.log("LISTCONTACT")}>
           <img src={smsIconSvg} alt="sms icon" />
         </Button>
       </div>
