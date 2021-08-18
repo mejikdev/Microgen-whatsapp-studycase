@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core"
+import { Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import React from "react"
 import { DARK_GREEN } from "utils/colors"
@@ -27,14 +27,14 @@ const Title = (props: propsType): JSX.Element => {
   const { title, description } = props
   const classes = useStyles()
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Typography variant="h6" align="center" className={classes.title}>
         {title}
       </Typography>
       <Typography variant="body1" align="center" className={classes.description}>
         {description}
       </Typography>
-    </div>
+    </Box>
   )
 }
 

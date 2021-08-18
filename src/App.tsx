@@ -1,3 +1,4 @@
+import Box from "@material-ui/core/Box"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { makeStyles } from "@material-ui/core/styles"
 import React from "react"
@@ -23,11 +24,11 @@ const App: React.FC = () => {
   return (
     <>
       <CssBaseline />
-      <div className={classes.root}>
+      <Box className={classes.root}>
         <ApolloProvider>
           <Routes />
         </ApolloProvider>
-      </div>
+      </Box>
     </>
   )
 }

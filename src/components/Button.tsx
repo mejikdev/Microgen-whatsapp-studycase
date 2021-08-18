@@ -1,4 +1,4 @@
-import { Button as ButtonMui } from "@material-ui/core"
+import { Box, Button as ButtonMui } from "@material-ui/core"
 import React from "react"
 import { LIGHT_GREEN, WHITE } from "utils/colors"
 
@@ -10,7 +10,7 @@ type propsType = {
 const Button = (props: propsType): JSX.Element => {
   const { title, disabled } = props
   return (
-    <div
+    <Box
       style={{
         position: "absolute",
         bottom: 80,
@@ -29,7 +29,7 @@ const Button = (props: propsType): JSX.Element => {
       >
         {title}
       </ButtonMui>
-    </div>
+    </Box>
   )
 }
 

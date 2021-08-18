@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core"
+import { Box, Button, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
@@ -45,7 +45,7 @@ const ListChat = (props: propsType): JSX.Element => {
     <>
       <Header child={<Title />} />
 
-      <div>
+      <Box>
         {loading ? (
           <LoadingProgress />
         ) : (
@@ -62,13 +62,13 @@ const ListChat = (props: propsType): JSX.Element => {
             />
           ))
         )}
-      </div>
+      </Box>
 
-      <div className={classes.startMessage}>
+      <Box className={classes.startMessage}>
         <Button onClick={() => console.log("LISTCONTACT")}>
           <img src={smsIconSvg} alt="sms icon" />
         </Button>
-      </div>
+      </Box>
     </>
   )
 }

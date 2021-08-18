@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@material-ui/core"
+import { Box, IconButton, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
@@ -37,14 +37,14 @@ const Title = (props: titleProps): JSX.Element => {
 
   return (
     <>
-      <div className={classes.parentView}>
-        <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
+      <Box className={classes.parentView}>
+        <Box style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
           <IconButton onClick={() => setMode("LISTCHAT")} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: "#FFFFFF" }} />
           </IconButton>
-        </div>
+        </Box>
         <Typography variant="h6">Pilih kontak</Typography>
-      </div>
+      </Box>
     </>
   )
 }
@@ -57,7 +57,7 @@ const ListContact = (props: propsType): JSX.Element => {
     <>
       <Header child={<Title setMode={setMode} />} />
 
-      {/* <div> */}
+      {/* <Box> */}
       {/* {loading ? (
           <LoadingProgress />
         ) : (
@@ -65,7 +65,7 @@ const ListContact = (props: propsType): JSX.Element => {
             // <ChatItem key={u.id} userName={u.firstName} userMessage={u.phoneNumber} userAvatar={u.avatar} />
           ))
         )}
-      </div> */}
+      </Box> */}
     </>
   )
 }

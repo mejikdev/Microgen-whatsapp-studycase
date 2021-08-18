@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core"
+import { Box, Typography } from "@material-ui/core"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { makeStyles } from "@material-ui/core/styles"
 import mgLogo from "assets/icons/mgLogo.png"
@@ -47,14 +47,14 @@ const SplashScreen = (): JSX.Element => {
   return (
     <>
       <CssBaseline />
-      <div className={classes.root}>
-        <div className={classes.header}>
+      <Box className={classes.root}>
+        <Box className={classes.header}>
           <img src={waIcon} className={classes.waIcon} alt="logo whatsapp" />
           <Typography variant="h5" align="center" className={classes.headerTitle}>
             Whatsapp Clone
           </Typography>
-        </div>
-        <div className={classes.footer}>
+        </Box>
+        <Box className={classes.footer}>
           <img src={mgLogo} className={classes.mgLogo} alt="logo microgen" />
           <Typography variant="caption" align="center">
             created with
@@ -62,8 +62,8 @@ const SplashScreen = (): JSX.Element => {
           <Typography variant="h6" align="center" className={classes.createdBy}>
             Microgen
           </Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   )
 }

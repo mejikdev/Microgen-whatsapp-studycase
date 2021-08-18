@@ -1,4 +1,4 @@
-import { Avatar, IconButton, TextareaAutosize, Typography } from "@material-ui/core"
+import { Avatar, Box, IconButton, TextareaAutosize, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import SendIcon from "@material-ui/icons/Send"
@@ -87,21 +87,21 @@ const Title = (props: propsTitle): JSX.Element => {
 
   return (
     <>
-      <div className={classes.parentView}>
-        <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
+      <Box className={classes.parentView}>
+        <Box style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
           <IconButton onClick={() => console.log("/")} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: WHITE }} />
           </IconButton>
-        </div>
-        <div
+        </Box>
+        <Box
           style={{
             width: "5%",
             alignSelf: "center",
           }}
         >
           <Avatar src={recipient?.avatar} className={classes.profileIcon} alt={recipient?.firstName} />
-        </div>
-        <div
+        </Box>
+        <Box
           style={{
             display: "flex",
             width: "76%",
@@ -110,8 +110,8 @@ const Title = (props: propsTitle): JSX.Element => {
           }}
         >
           <Typography className={classes.userName}>{recipient?.firstName}</Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   )
 }
@@ -146,7 +146,7 @@ const Chat = (props: propsType): JSX.Element => {
     <>
       <Header child={<Title recipient={dataChat?.recipient} />} />
 
-      <div
+      <Box
         style={{
           display: "flex",
           flexDirection: "column",
@@ -155,7 +155,7 @@ const Chat = (props: propsType): JSX.Element => {
           height: "92%",
         }}
       >
-        <div
+        <Box
           style={{
             backgroundColor: "#E4DDD6",
             height: "100%",
@@ -164,7 +164,7 @@ const Chat = (props: propsType): JSX.Element => {
           }}
         />
 
-        <div
+        <Box
           style={{
             position: "absolute",
             zIndex: 1000,
@@ -184,9 +184,9 @@ const Chat = (props: propsType): JSX.Element => {
               }
             })
           )}
-        </div>
+        </Box>
 
-        <div
+        <Box
           //   ref={inputRef}
           style={{
             zIndex: 2000,
@@ -200,7 +200,7 @@ const Chat = (props: propsType): JSX.Element => {
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={classes.parentInput}>
+            <Box className={classes.parentInput}>
               <TextareaAutosize
                 className={classes.userMessage}
                 placeholder="Type a message ..."
@@ -209,10 +209,10 @@ const Chat = (props: propsType): JSX.Element => {
               <IconButton type="submit">
                 <SendIcon />
               </IconButton>
-            </div>
+            </Box>
           </form>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   )
 }

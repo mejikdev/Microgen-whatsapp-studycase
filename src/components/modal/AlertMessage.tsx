@@ -1,3 +1,4 @@
+import Box from "@material-ui/core/Box"
 import Button from "@material-ui/core/Button"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Dialog from "@material-ui/core/Dialog"
@@ -12,13 +13,13 @@ const Transition = React.forwardRef(function Transition(props: TransitionProps, 
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-type propsType = {
+type AlertMessageProps = {
   loading?: boolean
   message: string
   action?: () => void
 }
 
-const AlertMessage = (props: propsType): JSX.Element => {
+const AlertMessage = (props: AlertMessageProps): JSX.Element => {
   const { message, loading, action } = props
   const open = true
   return (
@@ -30,10 +31,10 @@ const AlertMessage = (props: propsType): JSX.Element => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogContent>
-        <div style={{ display: "flex" }}>
-          {loading && <CircularProgress size={20} color={"inherit"} style={{ marginRight: 10 }} />}
+        <Box>
+          {loading && <CircularProgress size={20} color="inherit" style={{ marginRight: 10 }} />}
           <DialogContentText id="alert-dialog-slide-description">{message}</DialogContentText>
-        </div>
+        </Box>
       </DialogContent>
       {action && (
         <DialogActions>

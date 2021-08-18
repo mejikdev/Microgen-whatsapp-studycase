@@ -1,9 +1,10 @@
+import { Box } from "@material-ui/core"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import React from "react"
 
 const LoadingProgress = (): JSX.Element => {
   return (
-    <div
+    <Box
       style={{
         position: "absolute",
         margin: "150px auto",
@@ -13,7 +14,7 @@ const LoadingProgress = (): JSX.Element => {
       }}
     >
       <CircularProgress style={{ color: "green" }} />
-    </div>
+    </Box>
   )
 }
 

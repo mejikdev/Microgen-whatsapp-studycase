@@ -1,4 +1,4 @@
-import { Grid, InputAdornment, TextField } from "@material-ui/core"
+import { Box, Grid, InputAdornment, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
@@ -80,7 +80,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div>
+    <Box>
       <Title
         title={"Enter your phone number"}
         description={"WhatsApp will send an SMS message to verify your phone number"}
@@ -133,7 +133,7 @@ const Login: React.FC = () => {
         </Grid>
         <ButtonCustom title="Next" />
       </form>
-    </div>
+    </Box>
   )
 }
 
