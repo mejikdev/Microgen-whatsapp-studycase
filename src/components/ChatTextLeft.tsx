@@ -1,4 +1,4 @@
-import { Card, Typography } from "@material-ui/core"
+import { Box, Card, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import React from "react"
 import { FONT_INPUT, GREY_SECOND } from "utils/colors"
@@ -39,12 +39,12 @@ const useStyles = makeStyles({
 const ChatTextRight = (): JSX.Element => {
   const classes = useStyles()
   return (
-    <div className={classes.parentView}>
+    <Box className={classes.parentView}>
       <Card className={classes.cardView} variant={"elevation"} elevation={0.9}>
         <Typography className={classes.userMessage}>left</Typography>
         <Typography className={classes.userTime}>21</Typography>
       </Card>
-    </div>
+    </Box>
   )
 }
 

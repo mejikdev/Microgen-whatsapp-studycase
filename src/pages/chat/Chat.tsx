@@ -1,4 +1,4 @@
-import { Avatar, IconButton, TextareaAutosize, Typography } from "@material-ui/core"
+import { Avatar, Box, IconButton, TextareaAutosize, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import SendIcon from "@material-ui/icons/Send"
@@ -7,12 +7,12 @@ import ChatTextLeft from "components/ChatTextLeft"
 import ChatTextRight from "components/ChatTextRight"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ChatMutation, ChatQuery, ChatsQuery } from "hooks/chats"
+import { ChatMutation, ChatsQuery } from "hooks/chats"
 import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FONT_INPUT, GREY_BG_INPUT, WHITE } from "utils/colors"
 
-type propsType = {
+type ChatProps = {
   user?: User
   dataChat?: {
     conversationId?: string
@@ -21,7 +21,7 @@ type propsType = {
   handleBack: () => void
 }
 
-type propsTitle = {
+type TitleProps = {
   recipient?: User
   handleBack: () => void
 }
@@ -83,27 +83,27 @@ const useStyles = makeStyles({
   },
 })
 
-const Title = (props: propsTitle): JSX.Element => {
+const Title = (props: TitleProps): JSX.Element => {
   const { recipient, handleBack } = props
   const classes = useStyles()
 
   return (
     <>
-      <div className={classes.parentView}>
-        <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
+      <Box className={classes.parentView}>
+        <Box style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
           <IconButton onClick={() => handleBack()} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: WHITE }} />
           </IconButton>
-        </div>
-        <div
+        </Box>
+        <Box
           style={{
             width: "5%",
             alignSelf: "center",
           }}
         >
           <Avatar src={recipient?.avatar} className={classes.profileIcon} alt={recipient?.firstName} />
-        </div>
-        <div
+        </Box>
+        <Box
           style={{
             display: "flex",
             width: "76%",
@@ -112,17 +112,16 @@ const Title = (props: propsTitle): JSX.Element => {
           }}
         >
           <Typography className={classes.userName}>{recipient?.firstName}</Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   )
 }
 
-const Chat = (props: propsType): JSX.Element => {
+const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
   const { register, reset, handleSubmit } = useForm<Inputs>()
-  // const { data, loading } = ChatQuery(dataChat?.conversationId)
   const { data, loading } = ChatsQuery({
     variables: {
       conversationId: dataChat?.conversationId,
@@ -155,7 +154,7 @@ const Chat = (props: propsType): JSX.Element => {
     <>
       <Header child={<Title recipient={dataChat?.recipient} handleBack={handleBack} />} />
 
-      <div
+      <Box
         style={{
           display: "flex",
           flexDirection: "column",
@@ -164,7 +163,7 @@ const Chat = (props: propsType): JSX.Element => {
           height: "92%",
         }}
       >
-        <div
+        <Box
           style={{
             backgroundColor: "#E4DDD6",
             height: "100%",
@@ -173,7 +172,7 @@ const Chat = (props: propsType): JSX.Element => {
           }}
         />
 
-        <div
+        <Box
           style={{
             position: "absolute",
             zIndex: 1000,
@@ -193,9 +192,9 @@ const Chat = (props: propsType): JSX.Element => {
               }
             })
           )}
-        </div>
+        </Box>
 
-        <div
+        <Box
           //   ref={inputRef}
           style={{
             zIndex: 2000,
@@ -209,7 +208,7 @@ const Chat = (props: propsType): JSX.Element => {
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={classes.parentInput}>
+            <Box className={classes.parentInput}>
               <TextareaAutosize
                 className={classes.userMessage}
                 placeholder="Type a message ..."
@@ -218,10 +217,10 @@ const Chat = (props: propsType): JSX.Element => {
               <IconButton type="submit">
                 <SendIcon />
               </IconButton>
-            </div>
+            </Box>
           </form>
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   )
 }

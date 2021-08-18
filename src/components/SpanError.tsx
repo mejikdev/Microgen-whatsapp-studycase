@@ -1,12 +1,12 @@
 import React from "react"
 
-type propsType = {
+type SpanErrorProps = {
   title: string
 }
 
-const Button = (props: propsType): JSX.Element => {
+const SpanError = (props: SpanErrorProps): JSX.Element => {
   const { title } = props
   return <span style={{ fontSize: 12, color: "red" }}>{title}</span>
 }
 
-export default Button
+export default SpanError

@@ -1,4 +1,4 @@
-import { IconButton, TextField } from "@material-ui/core"
+import { Box, IconButton, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto"
 import ButtonCustom from "components/Button"
@@ -32,11 +32,11 @@ interface IFormInput {
   photo?: string
 }
 
-type propsType = {
+type ProfileProps = {
   user?: User
 }
 
-const Profile = (props: propsType): JSX.Element => {
+const Profile = (props: ProfileProps): JSX.Element => {
   const { user } = props
   const classes = useStyles()
   const { changeProfile } = UserMutation()
@@ -57,7 +57,7 @@ const Profile = (props: propsType): JSX.Element => {
   }, [user?.firstName, history])
 
   if (loading) {
-    return <AlertMessage loading={true} message="Saving profile ..." />
+    return <AlertMessage open={true} loading={true} message="Saving profile ..." />
   }
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -90,13 +90,13 @@ const Profile = (props: propsType): JSX.Element => {
   }
 
   return (
-    <div>
+    <Box>
       <Title title={"Profile info"} description={"Please profide your name and an optional profile photo"} />
 
       {/* !TODO upload avatar */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <div className={classes.inputImage}>
+        <Box>
+          <Box className={classes.inputImage}>
             <input
               accept="image/*"
               type="file"
@@ -117,16 +117,16 @@ const Profile = (props: propsType): JSX.Element => {
                 )}
               </label>
             </IconButton>
-          </div>
-          <div className={classes.inputText}>
+          </Box>
+          <Box className={classes.inputText}>
             <TextField id="time" type="text" fullWidth {...register("name", { required: true })} />
             {errors.name && <span style={{ fontSize: 12, color: "red" }}>Please insert a name !</span>}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         <ButtonCustom title="Next" />
       </form>
-    </div>
+    </Box>
   )
 }
 

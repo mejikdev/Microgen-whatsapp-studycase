@@ -1,4 +1,5 @@
 import { Button, Divider, Grid, TextField, Typography } from "@material-ui/core"
+import Box from "@material-ui/core/Box"
 import { makeStyles } from "@material-ui/core/styles"
 import smsIcon from "assets/icons/smsIcon.png"
 import ButtonCustom from "components/Button"
@@ -99,25 +100,25 @@ const Verifcation: React.FC = () => {
   }
 
   if (loading) {
-    return <AlertMessage message="Verifying ..." />
+    return <AlertMessage open={true} message="Verifying ..." />
   }
 
   if (loadingResend) {
-    return <AlertMessage message="Sending ..." />
+    return <AlertMessage open={true} message="Sending ..." />
   }
 
   if (failed) {
-    return <AlertMessage message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
+    return <AlertMessage open={true} message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
   }
 
   const Description = (): JSX.Element => {
     return (
-      <div>
+      <Box>
         Waiting to automatically detect as SMS sent to {phoneNumber}.{" "}
         <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
           Wrong number ?
         </Link>
-      </div>
+      </Box>
     )
   }
 
@@ -164,15 +165,15 @@ const Verifcation: React.FC = () => {
           </Grid>
         </Grid>
 
-        <div className={classes.resendGroup}>
+        <Box className={classes.resendGroup}>
           <Button className={classes.resend} onClick={() => handleResendCode()} disabled={Boolean(seconds)}>
             <img src={smsIcon} alt="sms icon" className={classes.iconSms} />
             <Typography variant="subtitle2">Resend SMS</Typography>
           </Button>
-          <div>
+          <Box>
             <Typography variant="subtitle1">{seconds}</Typography>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         <Divider style={{ margin: "0px 45px", color: "red" }} />
 

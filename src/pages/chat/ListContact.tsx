@@ -1,12 +1,11 @@
-import { IconButton, Typography } from "@material-ui/core"
+import { Box, IconButton, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ContactQuery, UsersQuery } from "hooks/listContact"
+import { ContactQuery } from "hooks/listContact"
 import React from "react"
-import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles({
   parentView: {
@@ -21,7 +20,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ListContactProps = {
   user?: User
   handleOpenChat: (conversationId?: string, recipient?: User) => void
   handleBack: () => void
@@ -34,23 +33,22 @@ type titleProps = {
 const Title = (props: titleProps): JSX.Element => {
   const { handleBack } = props
   const classes = useStyles()
-  const history = useHistory()
 
   return (
     <>
-      <div className={classes.parentView}>
-        <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
+      <Box className={classes.parentView}>
+        <Box style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
           <IconButton onClick={() => handleBack()} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: "#FFFFFF" }} />
           </IconButton>
-        </div>
+        </Box>
         <Typography variant="h6">Pilih kontak</Typography>
-      </div>
+      </Box>
     </>
   )
 }
 
-const ListContact = (props: propsType): JSX.Element => {
+const ListContact = (props: ListContactProps): JSX.Element => {
   const { user, handleOpenChat, handleBack } = props
   const { data, loading } = ContactQuery({
     variables: {

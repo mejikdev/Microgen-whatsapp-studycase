@@ -1,4 +1,4 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core"
+import { Avatar, Box, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import moment from "moment"
 import React from "react"
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ChatItemProps = {
   userName: string
   userAvatar?: string
   userMessage: string
@@ -74,12 +74,12 @@ type propsType = {
   handleOpenChat: (conversationId?: string, recipient?: User) => void
 }
 
-const ChatItem = (props: propsType): JSX.Element => {
+const ChatItem = (props: ChatItemProps): JSX.Element => {
   const { userName, userAvatar, userMessage, userTime, unreadMessage, recipient, conversationId, handleOpenChat } =
     props
   const classes = useStyles()
   return (
-    <div style={{ cursor: "pointer" }}>
+    <Box style={{ cursor: "pointer" }}>
       <ListItem
         alignItems="flex-start"
         style={{
@@ -93,7 +93,7 @@ const ChatItem = (props: propsType): JSX.Element => {
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
           <Avatar alt={userName} src={userAvatar} className={classes.profileImage} />
         </ListItemAvatar>
-        <div
+        <Box
           style={{
             display: "flex",
             flexDirection: "column",
@@ -104,7 +104,7 @@ const ChatItem = (props: propsType): JSX.Element => {
           {userMessage && (
             <ListItemText secondary={<Typography className={classes.userMessage}>{userMessage}</Typography>} />
           )}
-        </div>
+        </Box>
         <ListItemText
           style={{
             display: "flex",
@@ -123,7 +123,7 @@ const ChatItem = (props: propsType): JSX.Element => {
           }
         />
       </ListItem>
-    </div>
+    </Box>
   )
 }
 

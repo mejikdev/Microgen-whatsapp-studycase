@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core"
+import { Box, Button, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ListChatProps = {
   user?: User
   handleOpenChat: (conversationId?: string, recipient?: User) => void
   handleOpenContact: () => void
@@ -37,21 +37,16 @@ const Title = (): JSX.Element => {
 }
 
 /* !TODO show unread message */
-const ListChat = (props: propsType): JSX.Element => {
+const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat, handleOpenContact } = props
-  // const { data, loading } = ListChatsQuery(user?.id)
-  const { data, loading } = ListChatsQuery({
-    variables: {
-      userId: user?.id,
-    },
-  })
+  const { data, loading } = ListChatsQuery(user?.id)
   const classes = useStyles()
 
   return (
     <>
       <Header child={<Title />} />
 
-      <div>
+      <Box>
         {loading ? (
           <LoadingProgress />
         ) : (
@@ -68,13 +63,13 @@ const ListChat = (props: propsType): JSX.Element => {
             />
           ))
         )}
-      </div>
+      </Box>
 
-      <div className={classes.startMessage}>
+      <Box className={classes.startMessage}>
         <Button onClick={() => handleOpenContact()}>
           <img src={smsIconSvg} alt="sms icon" />
         </Button>
-      </div>
+      </Box>
     </>
   )
 }
