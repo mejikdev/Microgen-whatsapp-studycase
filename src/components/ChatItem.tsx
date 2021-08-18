@@ -66,7 +66,7 @@ const useStyles = makeStyles({
 type ChatItemProps = {
   userName: string
   userAvatar?: string
-  userMessage: string
+  userMessage?: string
   userTime?: string
   unreadMessage?: number
   recipient?: User

@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 })
 
 type ChatTextRightProps = {
-  message: string
+  message?: string
   createdAt?: string
 }
 

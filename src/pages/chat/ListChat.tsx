@@ -4,7 +4,7 @@ import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ListChatQuery, ListChatsQuery } from "hooks/listChat"
+import { useConversationQuery } from "hooks/conversation"
 import React from "react"
 
 const useStyles = makeStyles({
@@ -39,7 +39,11 @@ const Title = (): JSX.Element => {
 /* !TODO show unread message */
 const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat, handleOpenContact } = props
-  const { data, loading } = ListChatsQuery(user?.id)
+  const { data, loading } = useConversationQuery({
+    variables: {
+      userId: user?.id,
+    },
+  })
   const classes = useStyles()
 
   return (
@@ -50,18 +54,35 @@ const ListChat = (props: ListChatProps): JSX.Element => {
         {loading ? (
           <LoadingProgress />
         ) : (
-          data?.conversations.map((conversation: Conversation) => (
-            <ChatItem
-              key={conversation.id}
-              conversationId={conversation.id}
-              userName={conversation.people[0].firstName}
-              userMessage={conversation.messages[0].text}
-              userAvatar={conversation.people[0].avatar}
-              userTime={conversation.messages[0].createdAt}
-              recipient={conversation.people[0]}
-              handleOpenChat={handleOpenChat}
-            />
-          ))
+          data?.conversations.map((conversation: Conversation) => {
+            const { people, messages } = conversation
+            const recipient = people[0]
+
+            let lastMassage: Message = {
+              id: "default Message",
+              text: "",
+              createdAt: new Date().toString(),
+              recipient: recipient,
+              createdBy: recipient,
+            }
+
+            if (Array.isArray(messages) && messages.length) {
+              lastMassage = messages[0]
+            }
+
+            return (
+              <ChatItem
+                key={conversation.id}
+                conversationId={conversation.id}
+                userName={recipient.firstName}
+                userMessage={lastMassage.text}
+                userAvatar={recipient.avatar}
+                userTime={lastMassage.createdAt}
+                recipient={recipient}
+                handleOpenChat={handleOpenChat}
+              />
+            )
+          })
         )}
       </Box>
 
