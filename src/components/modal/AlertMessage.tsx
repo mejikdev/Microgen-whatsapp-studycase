@@ -31,10 +31,12 @@ const AlertMessage = (props: AlertMessageProps): JSX.Element => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogContent>
-        <Box>
-          {loading && <CircularProgress size={20} color="inherit" style={{ marginRight: 10 }} />}
-          <DialogContentText id="alert-dialog-slide-description">{message}</DialogContentText>
-        </Box>
+        <DialogContentText id="alert-dialog-slide-description">
+          <Box display="flex" alignSelf="center">
+            {loading && <CircularProgress size={22} color="inherit" style={{ marginRight: 20 }} />}
+            {message}
+          </Box>
+        </DialogContentText>
       </DialogContent>
       {action && (
         <DialogActions>
