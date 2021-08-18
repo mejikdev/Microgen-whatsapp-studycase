@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ListChatProps = {
   user?: User
   handleOpenChat: (conversationId?: string, recipient?: User) => void
 }
@@ -36,7 +36,7 @@ const Title = (): JSX.Element => {
 }
 
 /* !TODO show unread message */
-const ListChat = (props: propsType): JSX.Element => {
+const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat } = props
   const { data, loading } = ListChatsQuery(user?.id)
   const classes = useStyles()

@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ListContactProps = {
   user?: User
   setMode: React.Dispatch<React.SetStateAction<string>>
 }
@@ -49,7 +49,7 @@ const Title = (props: titleProps): JSX.Element => {
   )
 }
 
-const ListContact = (props: propsType): JSX.Element => {
+const ListContact = (props: ListContactProps): JSX.Element => {
   const { user, setMode } = props
   const { data, loading } = UsersQuery(user?.id)
 

@@ -4,11 +4,11 @@ import ListContact from "pages/chat/ListContact"
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 
-type propsType = {
+type HomeProps = {
   user?: User
 }
 
-const Home = (props: propsType): JSX.Element => {
+const Home = (props: HomeProps): JSX.Element => {
   const { user } = props
   const history = useHistory()
   const [mode, setMode] = useState("LISTCHAT")

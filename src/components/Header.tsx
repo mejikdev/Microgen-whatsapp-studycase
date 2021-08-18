@@ -12,11 +12,11 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type HeaderProps = {
   child: string | React.ReactNode
 }
 
-const Header = (props: propsType): JSX.Element => {
+const Header = (props: HeaderProps): JSX.Element => {
   const { child } = props
   const classes = useStyles()
   return <Box className={classes.parentHeader}>{child}</Box>

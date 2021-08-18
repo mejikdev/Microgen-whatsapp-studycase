@@ -41,12 +41,12 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ChatTextRightProps = {
   message: string
   createdAt?: string
 }
 
-const ChatTextRight = (props: propsType): JSX.Element => {
+const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
   const { message, createdAt } = props
   const classes = useStyles()
   return (

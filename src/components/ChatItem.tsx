@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   },
 })
 
-type propsType = {
+type ChatItemProps = {
   userName: string
   userAvatar?: string
   userMessage: string
@@ -74,7 +74,7 @@ type propsType = {
   handleOpenChat: (conversationId?: string, recipient?: User) => void
 }
 
-const ChatItem = (props: propsType): JSX.Element => {
+const ChatItem = (props: ChatItemProps): JSX.Element => {
   const { userName, userAvatar, userMessage, userTime, unreadMessage, recipient, conversationId, handleOpenChat } =
     props
   const classes = useStyles()

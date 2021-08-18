@@ -32,11 +32,11 @@ interface IFormInput {
   photo?: string
 }
 
-type propsType = {
+type ProfileProps = {
   user?: User
 }
 
-const Profile = (props: propsType): JSX.Element => {
+const Profile = (props: ProfileProps): JSX.Element => {
   const { user } = props
   const classes = useStyles()
   const { changeProfile } = UserMutation()

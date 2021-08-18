@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import React from "react"
 import { DARK_GREEN } from "utils/colors"
 
-type propsType = {
+type TitleProps = {
   title: string
   description: string | React.ReactNode
 }
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Title = (props: propsType): JSX.Element => {
+const Title = (props: TitleProps): JSX.Element => {
   const { title, description } = props
   const classes = useStyles()
   return (

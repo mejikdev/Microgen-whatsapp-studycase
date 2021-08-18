@@ -12,7 +12,7 @@ import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FONT_INPUT, GREY_BG_INPUT, WHITE } from "utils/colors"
 
-type propsType = {
+type ChatProps = {
   user?: User
   dataChat?: {
     conversationId?: string
@@ -20,7 +20,7 @@ type propsType = {
   }
 }
 
-type propsTitle = {
+type TitleProps = {
   recipient?: User
 }
 
@@ -81,7 +81,7 @@ const useStyles = makeStyles({
   },
 })
 
-const Title = (props: propsTitle): JSX.Element => {
+const Title = (props: TitleProps): JSX.Element => {
   const { recipient } = props
   const classes = useStyles()
 
@@ -116,7 +116,7 @@ const Title = (props: propsTitle): JSX.Element => {
   )
 }
 
-const Chat = (props: propsType): JSX.Element => {
+const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat } = props
   const classes = useStyles()
   const { register, reset, handleSubmit } = useForm<Inputs>()
