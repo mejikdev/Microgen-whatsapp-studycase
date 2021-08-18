@@ -4,7 +4,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { UsersQuery } from "hooks/listContact"
+import { ContactQuery, UsersQuery } from "hooks/listContact"
 import React from "react"
 import { useHistory } from "react-router-dom"
 
@@ -23,15 +23,16 @@ const useStyles = makeStyles({
 
 type propsType = {
   user?: User
-  setMode: React.Dispatch<React.SetStateAction<string>>
+  handleOpenChat: (conversationId?: string, recipient?: User) => void
+  handleBack: () => void
 }
 
 type titleProps = {
-  setMode: React.Dispatch<React.SetStateAction<string>>
+  handleBack: () => void
 }
 
 const Title = (props: titleProps): JSX.Element => {
-  const { setMode } = props
+  const { handleBack } = props
   const classes = useStyles()
   const history = useHistory()
 
@@ -39,7 +40,7 @@ const Title = (props: titleProps): JSX.Element => {
     <>
       <div className={classes.parentView}>
         <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
-          <IconButton onClick={() => setMode("LISTCHAT")} style={{ padding: 0 }}>
+          <IconButton onClick={() => handleBack()} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: "#FFFFFF" }} />
           </IconButton>
         </div>
@@ -50,22 +51,33 @@ const Title = (props: titleProps): JSX.Element => {
 }
 
 const ListContact = (props: propsType): JSX.Element => {
-  const { user, setMode } = props
-  const { data, loading } = UsersQuery(user?.id)
+  const { user, handleOpenChat, handleBack } = props
+  const { data, loading } = ContactQuery({
+    variables: {
+      userId: user?.id,
+    },
+  })
 
   return (
     <>
-      <Header child={<Title setMode={setMode} />} />
+      <Header child={<Title handleBack={handleBack} />} />
 
-      {/* <div> */}
-      {/* {loading ? (
+      <div>
+        {loading ? (
           <LoadingProgress />
         ) : (
           data?.users.map((u) => (
-            // <ChatItem key={u.id} userName={u.firstName} userMessage={u.phoneNumber} userAvatar={u.avatar} />
+            <ChatItem
+              key={u.id}
+              userName={u.firstName}
+              userMessage={u.phoneNumber}
+              userAvatar={u.avatar}
+              handleOpenChat={handleOpenChat}
+              recipient={u}
+            />
           ))
         )}
-      </div> */}
+      </div>
     </>
   )
 }

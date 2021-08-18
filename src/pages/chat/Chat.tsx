@@ -7,7 +7,7 @@ import ChatTextLeft from "components/ChatTextLeft"
 import ChatTextRight from "components/ChatTextRight"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ChatMutation, ChatQuery } from "hooks/chats"
+import { ChatMutation, ChatQuery, ChatsQuery } from "hooks/chats"
 import React from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FONT_INPUT, GREY_BG_INPUT, WHITE } from "utils/colors"
@@ -18,10 +18,12 @@ type propsType = {
     conversationId?: string
     recipient?: User
   }
+  handleBack: () => void
 }
 
 type propsTitle = {
   recipient?: User
+  handleBack: () => void
 }
 
 type Inputs = {
@@ -82,14 +84,14 @@ const useStyles = makeStyles({
 })
 
 const Title = (props: propsTitle): JSX.Element => {
-  const { recipient } = props
+  const { recipient, handleBack } = props
   const classes = useStyles()
 
   return (
     <>
       <div className={classes.parentView}>
         <div style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
-          <IconButton onClick={() => console.log("/")} style={{ padding: 0 }}>
+          <IconButton onClick={() => handleBack()} style={{ padding: 0 }}>
             <ArrowBackIcon fontSize="medium" style={{ color: WHITE }} />
           </IconButton>
         </div>
@@ -117,10 +119,15 @@ const Title = (props: propsTitle): JSX.Element => {
 }
 
 const Chat = (props: propsType): JSX.Element => {
-  const { user, dataChat } = props
+  const { user, dataChat, handleBack } = props
   const classes = useStyles()
   const { register, reset, handleSubmit } = useForm<Inputs>()
-  const { data, loading } = ChatQuery(dataChat?.conversationId)
+  // const { data, loading } = ChatQuery(dataChat?.conversationId)
+  const { data, loading } = ChatsQuery({
+    variables: {
+      conversationId: dataChat?.conversationId,
+    },
+  })
   const { sendChat } = ChatMutation()
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -129,7 +136,7 @@ const Chat = (props: propsType): JSX.Element => {
     sendChat({
       variables: {
         text,
-        recipeintId: dataChat?.recipient.id,
+        recipientId: dataChat?.recipient.id,
       },
     })
       .then((res) => {
@@ -142,9 +149,11 @@ const Chat = (props: propsType): JSX.Element => {
       })
   }
 
+  console.log(dataChat)
+
   return (
     <>
-      <Header child={<Title recipient={dataChat?.recipient} />} />
+      <Header child={<Title recipient={dataChat?.recipient} handleBack={handleBack} />} />
 
       <div
         style={{

@@ -1,4 +1,4 @@
-import { QueryResult, useMutation, useQuery } from "@apollo/react-hooks"
+import { QueryHookOptions, QueryResult, useMutation, useQuery } from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 
 const query = {
@@ -26,8 +26,8 @@ const query = {
     }
   `,
   sendChat: gql`
-    mutation sendMessage($text: Text, $recepientId: String) {
-      createMessage(input: { text: $text, recipientId: $recepientId }) {
+    mutation sendMessage($text: Text, $recipientId: String) {
+      createMessage(input: { text: $text, recipientId: $recipientId }) {
         id
         text
         file
@@ -62,9 +62,14 @@ function ChatQuery({ id }: any): ChatQueryResult {
   return chats
 }
 
+function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
+  const chats = useQuery<{ conversation: Conversation }>(query.getChat, options)
+  return chats
+}
+
 function ChatMutation() {
   const [sendChat] = useMutation<{ createMessage: Message }>(query.sendChat)
   return { sendChat }
 }
 
-export { ChatMutation, ChatQuery }
+export { ChatMutation, ChatQuery, ChatsQuery }

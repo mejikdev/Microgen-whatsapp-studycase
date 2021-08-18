@@ -4,7 +4,7 @@ import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ListChatsQuery } from "hooks/listChat"
+import { ListChatQuery, ListChatsQuery } from "hooks/listChat"
 import React from "react"
 
 const useStyles = makeStyles({
@@ -12,19 +12,20 @@ const useStyles = makeStyles({
     position: "absolute",
     width: 62,
     height: 62,
-    left: 293,
-    top: 696,
     backgroundColor: "#46C655",
     borderRadius: "50%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    bottom: 50,
+    right: 30,
   },
 })
 
 type propsType = {
   user?: User
   handleOpenChat: (conversationId?: string, recipient?: User) => void
+  handleOpenContact: () => void
 }
 
 const Title = (): JSX.Element => {
@@ -37,8 +38,13 @@ const Title = (): JSX.Element => {
 
 /* !TODO show unread message */
 const ListChat = (props: propsType): JSX.Element => {
-  const { user, handleOpenChat } = props
-  const { data, loading } = ListChatsQuery(user?.id)
+  const { user, handleOpenChat, handleOpenContact } = props
+  // const { data, loading } = ListChatsQuery(user?.id)
+  const { data, loading } = ListChatsQuery({
+    variables: {
+      userId: user?.id,
+    },
+  })
   const classes = useStyles()
 
   return (
@@ -65,7 +71,7 @@ const ListChat = (props: propsType): JSX.Element => {
       </div>
 
       <div className={classes.startMessage}>
-        <Button onClick={() => console.log("LISTCONTACT")}>
+        <Button onClick={() => handleOpenContact()}>
           <img src={smsIconSvg} alt="sms icon" />
         </Button>
       </div>

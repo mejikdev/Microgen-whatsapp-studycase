@@ -27,18 +27,26 @@ const Home = (props: propsType): JSX.Element => {
       recipient,
     })
   }
+  const handleOpenContact = () => {
+    setMode("LISTCONTACT")
+  }
+
+  const handleBack = () => {
+    setMode("LISTCHAT")
+    setDataChat({})
+  }
 
   // ===== render =========
 
-  // if (mode === "LISTCONTACT") {
-  //   return <ListContact user={user} setMode={setMode} />
-  // }
-
-  if (mode === "CHAT") {
-    return <Chat user={user} dataChat={dataChat} />
+  if (mode === "LISTCONTACT") {
+    return <ListContact user={user} handleOpenChat={handleOpenChat} handleBack={handleBack} />
   }
 
-  return <ListChat user={user} handleOpenChat={handleOpenChat} />
+  if (mode === "CHAT") {
+    return <Chat user={user} dataChat={dataChat} handleBack={handleBack} />
+  }
+
+  return <ListChat user={user} handleOpenChat={handleOpenChat} handleOpenContact={handleOpenContact} />
 }
 
 export default Home

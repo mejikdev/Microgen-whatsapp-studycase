@@ -1,4 +1,4 @@
-import { QueryResult, useQuery } from "@apollo/react-hooks"
+import { QueryHookOptions, QueryResult, useQuery } from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 
 const query = {
@@ -48,4 +48,9 @@ function ListChatsQuery({ id }: any): ListChatsQueryResult {
   return Listchats
 }
 
-export { ListChatsQuery }
+function ListChatQuery(options: QueryHookOptions): ListChatsQueryResult {
+  const get = useQuery<{ conversations: [Conversation] }>(query.getChats, options)
+  return get
+}
+
+export { ListChatQuery, ListChatsQuery }

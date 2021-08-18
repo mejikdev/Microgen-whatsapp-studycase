@@ -1,4 +1,4 @@
-import { QueryResult, useQuery } from "@apollo/react-hooks"
+import { QueryHookOptions, QueryResult, useQuery } from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 const query = {
   getContact: gql`
@@ -25,4 +25,9 @@ function UsersQuery(id: any): UsersQueryResult {
   return useQuery<{ users: [User] }>(query.getContact, { variables: { userId: id || "61169240afe16600347a0f0b" } })
 }
 
-export { UsersQuery }
+function ContactQuery(options: QueryHookOptions): UsersQueryResult {
+  const get = useQuery<{ users: [User] }>(query.getContact, options)
+  return get
+}
+
+export { ContactQuery, UsersQuery }
