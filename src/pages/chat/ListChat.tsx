@@ -1,10 +1,12 @@
-import { Box, Button, Typography } from "@material-ui/core"
+import { Box, Button, IconButton, Menu, MenuItem, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import MoreVertIcon from "@material-ui/icons/MoreVert"
 import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
 import { useConversationQuery } from "hooks/conversation"
+import { destroyCookie } from "nookies"
 import React from "react"
 
 const useStyles = makeStyles({
@@ -29,10 +31,33 @@ type ListChatProps = {
 }
 
 const Title = (): JSX.Element => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+    destroyCookie(null, "token")
+    window.location.href = "/public"
+  }
+
   return (
-    <Typography variant="h6" style={{ fontWeight: "bold" }}>
-      WhatsApp
-    </Typography>
+    <Box display="flex" justifyContent="space-between" width="100%">
+      <Typography variant="h6" style={{ fontWeight: "bold" }}>
+        WhatsApp
+      </Typography>
+      <IconButton size="small" style={{ color: "white" }} onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Menu id="long-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
+        <MenuItem key={"Logout"} onClick={handleClose}>
+          Logout
+        </MenuItem>
+      </Menu>
+    </Box>
   )
 }
 
@@ -75,7 +100,7 @@ const ListChat = (props: ListChatProps): JSX.Element => {
                 key={conversation.id}
                 conversationId={conversation.id}
                 userName={recipient.firstName}
-                userMessage={lastMassage.text}
+                userMessage={lastMassage.text || "FILE"}
                 userAvatar={recipient.avatar}
                 userTime={lastMassage.createdAt}
                 recipient={recipient}
