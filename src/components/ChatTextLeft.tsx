@@ -62,7 +62,7 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
                 <a href={file}>
                   <img src={iconDocument} alt="icon" style={{ marginRight: 5 }} />
                 </a>
-                <Typography className={classes.userMessage}>IMG_001</Typography>
+                <Typography className={classes.userMessage}>FILE</Typography>
               </Box>
               <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
             </>

@@ -5,9 +5,9 @@ import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { useConversationQuery } from "hooks/conversation"
+import { useConversationQuery, useConversationSubcription } from "hooks/conversation"
 import { destroyCookie } from "nookies"
-import React from "react"
+import React, { useEffect } from "react"
 
 const useStyles = makeStyles({
   startMessage: {
@@ -64,12 +64,23 @@ const Title = (): JSX.Element => {
 /* !TODO show unread message */
 const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat, handleOpenContact } = props
+  const classes = useStyles()
   const { data, loading } = useConversationQuery({
     variables: {
       userId: user?.id,
     },
   })
-  const classes = useStyles()
+  const { data: sub } = useConversationSubcription({
+    variables: {
+      userId: user?.id,
+    },
+  })
+
+  useEffect(() => {
+    if (sub?.conversationAdded) {
+      console.log("sub")
+    }
+  }, [sub?.conversationAdded])
 
   return (
     <>

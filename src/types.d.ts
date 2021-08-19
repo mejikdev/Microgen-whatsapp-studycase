@@ -21,4 +21,5 @@ interface Message {
   recipient: User
   createdBy: User
   createdAt: string
+  conversation?: Conversation
 }

@@ -123,35 +123,40 @@ const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
   const { register, reset, handleSubmit } = useForm<Inputs>()
-  const [dataMessage, setDataMessage] = useState<Message[]>()
+  const [dataMessage, setDataMessage] = useState<Message[]>([])
+  const [conversationId, setConversationId] = useState<string>()
   const { data, loading } = ChatsQuery({
     variables: {
-      conversationId: dataChat?.conversationId || "",
+      conversationId: conversationId,
     },
   })
   const { sendChat } = ChatMutation()
   const { data: sub } = ChatSubcription({
     variables: {
-      conversationId: dataChat?.conversationId,
+      conversationId: conversationId,
     },
   })
 
   useEffect(() => {
-    console.log("ex", data?.messages)
+    if (!dataChat?.conversationId) {
+      setConversationId(dataChat?.conversationId || "")
+    }
+  }, [dataChat?.conversationId])
 
-    setDataMessage(data?.messages)
-  }, [data?.messages])
-
+  // set first data messages
   useEffect(() => {
-    console.log("s", sub?.messageAdded)
-    if (sub?.messageAdded && dataMessage) {
-      console.log("ex")
+    if (data?.messages) {
+      setDataMessage(data?.messages)
+    }
+  }, [data])
 
+  // subcription data messages
+  useEffect(() => {
+    console.log("s", sub)
+    if (sub?.messageAdded) {
       setDataMessage([...dataMessage, sub?.messageAdded])
     }
   }, [sub?.messageAdded])
-
-  console.log(data?.messages)
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const { text } = data
@@ -160,11 +165,14 @@ const Chat = (props: ChatProps): JSX.Element => {
       variables: {
         text,
         recipientId: dataChat?.recipient?.id,
-        conversationId: dataChat?.conversationId,
+        conversationId: conversationId,
       },
     })
       .then((res) => {
         // console.log(res)
+        if (!conversationId) {
+          setConversationId(res?.data?.createMessage?.conversation?.id || "")
+        }
         reset()
       })
       .catch((err) => {
@@ -180,11 +188,14 @@ const Chat = (props: ChatProps): JSX.Element => {
         variables: {
           file,
           recipientId: dataChat?.recipient?.id,
-          conversationId: dataChat?.conversationId,
+          conversationId: conversationId,
         },
       })
         .then((res) => {
           // console.log(res)
+          if (!conversationId) {
+            setConversationId(res?.data?.createMessage?.conversation?.id || "")
+          }
           reset()
         })
         .catch((err) => {
