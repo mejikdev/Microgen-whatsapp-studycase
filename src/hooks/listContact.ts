@@ -20,14 +20,9 @@ type UsersQueryResult = QueryResult<
   Record<string, User>
 >
 
-// !TODO fix it hardcode in variables
-function UsersQuery(id: any): UsersQueryResult {
-  return useQuery<{ users: [User] }>(query.getContact, { variables: { userId: id || "61169240afe16600347a0f0b" } })
-}
-
 function ContactQuery(options: QueryHookOptions): UsersQueryResult {
   const get = useQuery<{ users: [User] }>(query.getContact, options)
   return get
 }
 
-export { ContactQuery, UsersQuery }
+export { ContactQuery }

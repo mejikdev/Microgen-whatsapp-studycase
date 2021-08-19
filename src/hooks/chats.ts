@@ -11,31 +11,21 @@ import { gql } from "graphql-tag"
 
 const query = {
   getChat: gql`
-    query getChats($conversationId: String!) {
-      conversation(id: $conversationId) {
+    query getMessages($conversationId: String) {
+      messages(where: { conversationId: $conversationId }) {
         id
-        name
-        messages {
-          id
-          text
-          file
-          recipient {
-            id
-            firstName
-          }
-          createdBy {
-            id
-            firstName
-          }
-          createdAt
-        }
+        text
+        file
         createdAt
+        createdBy {
+          id
+        }
       }
     }
   `,
   sendChat: gql`
-    mutation sendMessage($text: Text, $recipientId: String) {
-      createMessage(input: { text: $text, recipientId: $recipientId }) {
+    mutation sendMessage($text: Text, $recipientId: String, $conversationId: String) {
+      createMessage(input: { text: $text, recipientId: $recipientId, conversationId: $conversationId }) {
         id
         text
         file
@@ -60,6 +50,9 @@ const query = {
         text
         file
         createdAt
+        createdBy {
+          id
+        }
       }
     }
   `,
@@ -67,13 +60,13 @@ const query = {
 
 type ChatQueryResult = QueryResult<
   {
-    conversation: Conversation
+    messages: Message[]
   },
   Record<string, User>
 >
 
 function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
-  const chats = useQuery<{ conversation: Conversation }>(query.getChat, options)
+  const chats = useQuery<{ messages: Message[] }>(query.getChat, options)
   return chats
 }
 

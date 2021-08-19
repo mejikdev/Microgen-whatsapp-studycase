@@ -8,7 +8,7 @@ import ChatTextRight from "components/ChatTextRight"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
 import { ChatMutation, ChatsQuery, ChatSubcription } from "hooks/chats"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FONT_INPUT, GREY_BG_INPUT, WHITE } from "utils/colors"
 
@@ -122,9 +122,10 @@ const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
   const { register, reset, handleSubmit } = useForm<Inputs>()
+  const [dataMessage, setDataMessage] = useState<Message[]>()
   const { data, loading } = ChatsQuery({
     variables: {
-      conversationId: dataChat?.conversationId,
+      conversationId: dataChat?.conversationId || "",
     },
   })
   const { sendChat } = ChatMutation()
@@ -132,10 +133,24 @@ const Chat = (props: ChatProps): JSX.Element => {
     variables: {
       conversationId: dataChat?.conversationId,
     },
-    onSubscriptionData: ({ subscriptionData }) => {
-      console.log("s", subscriptionData.data.messageAdded)
-    },
   })
+
+  useEffect(() => {
+    console.log("ex", data?.messages)
+
+    setDataMessage(data?.messages)
+  }, [data?.messages])
+
+  useEffect(() => {
+    console.log("s", sub?.messageAdded)
+    if (sub?.messageAdded && dataMessage) {
+      console.log("ex")
+
+      setDataMessage([...dataMessage, sub?.messageAdded])
+    }
+  }, [sub?.messageAdded])
+
+  console.log(data?.messages)
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const { text } = data
@@ -143,11 +158,12 @@ const Chat = (props: ChatProps): JSX.Element => {
     sendChat({
       variables: {
         text,
-        recipientId: dataChat?.recipient.id,
+        recipientId: dataChat?.recipient?.id,
+        conversationId: dataChat?.conversationId,
       },
     })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         reset()
       })
       .catch((err) => {
@@ -166,7 +182,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           flexDirection: "column",
           width: "100%",
           background: "url(" + BgWa + ")",
-          height: "92%",
+          height: "91%",
         }}
       >
         <Box
@@ -182,15 +198,17 @@ const Chat = (props: ChatProps): JSX.Element => {
           style={{
             position: "absolute",
             zIndex: 1000,
-            height: "92%",
+            height: "85%",
             width: "100%",
             paddingTop: 20,
+            overflow: "auto",
+            paddingBottom: 20,
           }}
         >
           {loading ? (
             <LoadingProgress />
           ) : (
-            data?.conversation?.messages.map((m, i) => {
+            dataMessage?.map((m, i) => {
               if (m.createdBy.id === user?.id) {
                 return <ChatTextRight message={m.text} createdAt={m.createdAt} />
               } else {
