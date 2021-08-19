@@ -72,6 +72,7 @@ const ListContact = (props: ListContactProps): JSX.Element => {
               userAvatar={u.avatar}
               handleOpenChat={handleOpenChat}
               recipient={u}
+              ownerId={user?.id}
             />
           ))
         )}

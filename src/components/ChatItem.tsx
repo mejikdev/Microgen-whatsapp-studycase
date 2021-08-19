@@ -1,5 +1,6 @@
 import { Avatar, Box, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import axios from "axios"
 import moment from "moment"
 import React from "react"
 import { GREY, LIGHT_GREEN_SECOND, WHITE } from "utils/colors"
@@ -72,12 +73,48 @@ type ChatItemProps = {
   recipient?: User
   conversationId?: string
   handleOpenChat: (conversationId?: string, recipient?: User) => void
+  ownerId?: string
 }
 
 const ChatItem = (props: ChatItemProps): JSX.Element => {
-  const { userName, userAvatar, userMessage, userTime, unreadMessage, recipient, conversationId, handleOpenChat } =
-    props
+  const {
+    userName,
+    userAvatar,
+    userMessage,
+    userTime,
+    unreadMessage,
+    recipient,
+    conversationId,
+    handleOpenChat,
+    ownerId,
+  } = props
   const classes = useStyles()
+
+  const handleClick = async () => {
+    if (conversationId) {
+      handleOpenChat(conversationId, recipient)
+    } else {
+      console.log("sini")
+
+      try {
+        await axios
+          .post(process.env.REACT_APP_API_URL + "/getConversationId", {
+            recipientId: recipient?.id,
+            userId: ownerId,
+          })
+          .then((res) => {
+            handleOpenChat(res?.data.conversationId, recipient)
+          })
+          .catch((err) => {
+            console.log(err)
+            handleOpenChat("", recipient)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
   return (
     <Box style={{ cursor: "pointer" }}>
       <ListItem
@@ -88,7 +125,7 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
           flex: 1,
           marginTop: "-1%",
         }}
-        onClick={() => handleOpenChat(conversationId, recipient)}
+        onClick={handleClick}
       >
         <ListItemAvatar style={{ flex: 0.15, marginLeft: "-1%" }}>
           <Avatar alt={userName} src={userAvatar} className={classes.profileImage} />
