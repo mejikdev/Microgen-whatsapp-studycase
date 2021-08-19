@@ -1,6 +1,7 @@
 import { Avatar, Box, IconButton, TextareaAutosize, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+import AttachFileIcon from "@material-ui/icons/AttachFile"
 import SendIcon from "@material-ui/icons/Send"
 import BgWa from "assets/images/bgWA.png"
 import ChatTextLeft from "components/ChatTextLeft"
@@ -172,6 +173,27 @@ const Chat = (props: ChatProps): JSX.Element => {
       })
   }
 
+  const onSendFile = async (e: React.FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files !== null) {
+      const file = e.currentTarget.files[0]
+      sendChat({
+        variables: {
+          file,
+          recipientId: dataChat?.recipient?.id,
+          conversationId: dataChat?.conversationId,
+        },
+      })
+        .then((res) => {
+          // console.log(res)
+          reset()
+        })
+        .catch((err) => {
+          console.log(err)
+          reset()
+        })
+    }
+  }
+
   return (
     <>
       <Header child={<Title recipient={dataChat?.recipient} handleBack={handleBack} />} />
@@ -210,9 +232,9 @@ const Chat = (props: ChatProps): JSX.Element => {
           ) : (
             dataMessage?.map((m, i) => {
               if (m.createdBy.id === user?.id) {
-                return <ChatTextRight message={m.text} createdAt={m.createdAt} />
+                return <ChatTextRight message={m.text} createdAt={m.createdAt} file={m.file} />
               } else {
-                return <ChatTextLeft message={m.text} createdAt={m.createdAt} />
+                return <ChatTextLeft message={m.text} createdAt={m.createdAt} file={m.file} />
               }
             })
           )}
@@ -238,7 +260,15 @@ const Chat = (props: ChatProps): JSX.Element => {
                 placeholder="Type a message ..."
                 {...register("text", { required: true })}
               />
-              <IconButton type="submit">
+              <input type="file" style={{ display: "none" }} id="icon-button-file" onChange={(e) => onSendFile(e)} />
+              {/* <IconButton type="submit"> */}
+              <Box display="flex" alignSelf="center" paddingRight="5px" paddingLeft="5px" marginTop="7px">
+                <label htmlFor="icon-button-file">
+                  <AttachFileIcon />
+                </label>
+              </Box>
+              {/* </IconButton> */}
+              <IconButton type="submit" size="small">
                 <SendIcon />
               </IconButton>
             </Box>

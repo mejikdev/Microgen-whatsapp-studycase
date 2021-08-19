@@ -24,8 +24,8 @@ const query = {
     }
   `,
   sendChat: gql`
-    mutation sendMessage($text: Text, $recipientId: String, $conversationId: String) {
-      createMessage(input: { text: $text, recipientId: $recipientId, conversationId: $conversationId }) {
+    mutation sendMessage($text: Text, $file: Upload, $recipientId: String, $conversationId: String) {
+      createMessage(input: { text: $text, file: $file, recipientId: $recipientId, conversationId: $conversationId }) {
         id
         text
         file
