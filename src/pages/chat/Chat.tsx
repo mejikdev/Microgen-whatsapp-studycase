@@ -137,8 +137,9 @@ const Chat = (props: ChatProps): JSX.Element => {
     },
   })
 
+  // initial set converstation id
   useEffect(() => {
-    if (!dataChat?.conversationId) {
+    if (!conversationId) {
       setConversationId(dataChat?.conversationId || "")
     }
   }, [dataChat?.conversationId])
@@ -152,7 +153,6 @@ const Chat = (props: ChatProps): JSX.Element => {
 
   // subcription data messages
   useEffect(() => {
-    console.log("s", sub)
     if (sub?.messageAdded) {
       setDataMessage([...dataMessage, sub?.messageAdded])
     }

@@ -1,5 +1,6 @@
-import { Box, Card, Typography } from "@material-ui/core"
+import { Box, Card, Icon, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import DoneAllIcon from "@material-ui/icons/DoneAll"
 import iconDocument from "assets/icons/doc.png"
 import moment from "moment"
 import React from "react"
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
     textAlign: "right",
   },
   cardView: {
-    backgroundColor: "#E1FFC7",
+    backgroundColor: "#DCF7C5",
     paddingTop: 5,
     paddingLeft: 8,
     paddingRight: 8,
@@ -57,7 +58,6 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
         {message ? (
           <>
             <Typography className={classes.userMessage}>{message}</Typography>
-            <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
           </>
         ) : (
           file && (
@@ -68,10 +68,14 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
                 </a>
                 <Typography className={classes.userMessage}>FILE</Typography>
               </Box>
-              <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
             </>
           )
         )}
+
+        <Box display="flex" textAlign="right" paddingLeft="50px">
+          <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
+          <DoneAllIcon style={{ fontSize: 14, marginLeft: 5 }} />
+        </Box>
       </Card>
     </Box>
   )
