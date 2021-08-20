@@ -133,7 +133,7 @@ const Chat = (props: ChatProps): JSX.Element => {
     },
     fetchPolicy: "network-only",
   })
-  const { sendChat } = ChatMutation()
+  const { sendChat, deleteChat } = ChatMutation()
   const { data: sub } = ChatSubcription({
     variables: {
       conversationId: conversationId,
@@ -208,6 +208,17 @@ const Chat = (props: ChatProps): JSX.Element => {
     }
   }
 
+  // TODO handle error
+  const handleDelete = async (id?: string) => {
+    const newDataMessage = dataMessage.filter((m) => m.id !== id)
+    setDataMessage(newDataMessage)
+    deleteChat({
+      variables: {
+        id,
+      },
+    })
+  }
+
   const executeScroll = () => {
     myRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -255,8 +266,9 @@ const Chat = (props: ChatProps): JSX.Element => {
             dataMessage?.map((m, i) => {
               if (!m) return null
               if (m.createdBy.id === user?.id) {
-                return <ChatTextRight key={m.id} message={m} />
+                return <ChatTextRight key={m.id} message={m} handleDelete={handleDelete} />
               } else {
+                // TODO refactor props same as chat right
                 return <ChatTextLeft key={m.id} message={m.text} createdAt={m.createdAt} file={m.file} />
               }
             })

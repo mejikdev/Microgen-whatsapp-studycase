@@ -1,6 +1,5 @@
 import {
   MutationHookOptions,
-  MutationResult,
   QueryHookOptions,
   QueryResult,
   SubscriptionHookOptions,
@@ -76,6 +75,13 @@ const query = {
       }
     }
   `,
+  deleteChat: gql`
+    mutation deleteMessage($id: String!) {
+      deleteMessage(id: $id) {
+        id
+      }
+    }
+  `,
 }
 
 type ChatQueryResult = QueryResult<
@@ -87,6 +93,7 @@ type ChatQueryResult = QueryResult<
 
 type ChatMutationResult = {
   sendChat: (options: MutationHookOptions) => Promise<FetchResult<{ createMessage: Message }>>
+  deleteChat: (options: MutationHookOptions) => Promise<FetchResult<{ deleteMessage: Message }>>
 }
 
 function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
@@ -96,9 +103,11 @@ function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
 
 function ChatMutation(): ChatMutationResult {
   const [sendChat] = useMutation<{ createMessage: Message }>(query.sendChat)
-  return { sendChat }
+  const [deleteChat] = useMutation<{ deleteMessage: Message }>(query.deleteChat)
+  return { sendChat, deleteChat }
 }
 
+// subcription expect result
 function ChatSubcription(options: SubscriptionHookOptions) {
   const chatSub = useSubscription<{ messageAdded: Message }>(query.subcriptionChat, options)
   return chatSub

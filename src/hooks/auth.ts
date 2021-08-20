@@ -1,14 +1,6 @@
-import { MutationResult, useMutation } from "@apollo/react-hooks"
+import { MutationHookOptions, useMutation } from "@apollo/react-hooks"
+import { FetchResult } from "apollo-boost"
 import gql from "graphql-tag"
-
-type login = {
-  phoneNumber: string
-}
-
-// type verify = {
-//   phoneNumber: string
-//   code: string
-// }
 
 interface responVerify {
   verifyLoginWithPhone: verifyLoginWithPhone
@@ -39,8 +31,13 @@ const query = {
   `,
 }
 
-function AuthMutation() {
-  const [login] = useMutation<{ input: login }>(query.loginWithPhone)
+type AuthMutationResult = {
+  login: (options: MutationHookOptions) => Promise<FetchResult<{ message: string }>>
+  verify: (options: MutationHookOptions) => Promise<FetchResult<responVerify>>
+}
+
+function AuthMutation(): AuthMutationResult {
+  const [login] = useMutation<{ message: string }>(query.loginWithPhone)
   const [verify] = useMutation<responVerify>(query.verifyOtpPhone)
   return { login, verify }
 }

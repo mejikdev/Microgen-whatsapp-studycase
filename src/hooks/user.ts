@@ -1,4 +1,5 @@
-import { QueryResult, useMutation, useQuery } from "@apollo/react-hooks"
+import { MutationHookOptions, QueryResult, useMutation, useQuery } from "@apollo/react-hooks"
+import { FetchResult } from "apollo-boost"
 import { gql } from "graphql-tag"
 const query = {
   checkLoggedIn: gql`
@@ -28,11 +29,15 @@ type UserQueryResult = QueryResult<
   Record<string, User>
 >
 
+type UserMutationResult = {
+  changeProfile: (options: MutationHookOptions) => Promise<FetchResult<User>>
+}
+
 function UserQuery(): UserQueryResult {
   return useQuery<{ user: User }>(query.checkLoggedIn)
 }
 
-function UserMutation() {
+function UserMutation(): UserMutationResult {
   const [changeProfile] = useMutation<User>(query.changeProfile)
   return { changeProfile }
 }

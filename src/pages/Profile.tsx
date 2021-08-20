@@ -60,6 +60,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
     return <AlertMessage open={true} loading={true} message="Saving profile ..." />
   }
 
+  // !TODO condition error message
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setLoading(true)
     const { name } = data
@@ -73,7 +74,6 @@ const Profile = (props: ProfileProps): JSX.Element => {
         window.location.href = "/"
         setLoading(false)
       })
-      // !TODO condition error message
       .catch((err) => {
         console.log(err)
         setLoading(false)
