@@ -154,7 +154,7 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
           secondary={
             unreadMessage ? (
               <Avatar className={classes.avatarStyle}>
-                <Typography className={classes.textMsgCount}>{unreadMessage}</Typography>
+                <Typography className={classes.textMsgCount}>{unreadMessage > 99 ? "99+" : unreadMessage}</Typography>
               </Avatar>
             ) : undefined
           }
