@@ -8,7 +8,7 @@ import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
 import { useConversationQuery } from "hooks/conversation"
 import { destroyCookie } from "nookies"
-import React, { useEffect } from "react"
+import React from "react"
 
 const useStyles = makeStyles({
   startMessage: {
@@ -62,11 +62,11 @@ const Title = (): JSX.Element => {
   )
 }
 
-/* !TODO show unread message */
 const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat, handleOpenContact } = props
   const classes = useStyles()
   const { data, loading } = useConversationQuery({
+    skip: !user?.id,
     variables: {
       userId: user?.id,
     },

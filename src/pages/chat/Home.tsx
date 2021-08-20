@@ -1,3 +1,4 @@
+import { useConversationQuery } from "hooks/conversation"
 import Chat from "pages/chat/Chat"
 import ListChat from "pages/chat/ListChat"
 import ListContact from "pages/chat/ListContact"
@@ -13,6 +14,13 @@ const Home = (props: HomeProps): JSX.Element => {
   const history = useHistory()
   const [mode, setMode] = useState("LISTCHAT")
   const [dataChat, setDataChat] = useState<{ conversationId?: string; recipient?: User }>()
+
+  const { refetch } = useConversationQuery({
+    skip: !user?.id,
+    variables: {
+      userId: user?.id,
+    },
+  })
 
   useEffect(() => {
     if (!user?.firstName) {
@@ -34,6 +42,7 @@ const Home = (props: HomeProps): JSX.Element => {
   const handleBack = () => {
     setMode("LISTCHAT")
     setDataChat({})
+    refetch()
   }
 
   // ===== render =========

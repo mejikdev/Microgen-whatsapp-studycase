@@ -128,8 +128,10 @@ const Chat = (props: ChatProps): JSX.Element => {
   const [conversationId, setConversationId] = useState<string>()
   const { data, loading } = ChatsQuery({
     variables: {
+      skip: !conversationId,
       conversationId: conversationId,
     },
+    fetchPolicy: "network-only",
   })
   const { sendChat } = ChatMutation()
   const { data: sub } = ChatSubcription({
@@ -148,9 +150,6 @@ const Chat = (props: ChatProps): JSX.Element => {
   // set first data messages
   useEffect(() => {
     if (data?.messages) {
-      console.log("sini")
-      console.log(data?.messages)
-
       setDataMessage(data?.messages)
       executeScroll()
     }
