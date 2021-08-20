@@ -1,4 +1,4 @@
-import { QueryHookOptions, QueryResult, SubscriptionHookOptions, useQuery, useSubscription } from "@apollo/react-hooks"
+import { QueryHookOptions, QueryResult, useQuery } from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 
 const query = {
@@ -75,8 +75,4 @@ function useConversationQuery(options: QueryHookOptions): ConversationQueryResul
   return useQuery<{ conversations: Conversation[] }>(query.getConversations, options)
 }
 
-function useConversationSubcription(options: SubscriptionHookOptions) {
-  return useSubscription<{ conversationAdded: Conversation }>(query.subcriptionConversation, options)
-}
-
-export { useConversationQuery, useConversationSubcription }
+export { useConversationQuery }

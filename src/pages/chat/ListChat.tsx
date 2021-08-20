@@ -6,7 +6,7 @@ import ChatItem from "components/ChatItem"
 import EmptyChat from "components/EmptyChat"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { useConversationQuery, useConversationSubcription } from "hooks/conversation"
+import { useConversationQuery } from "hooks/conversation"
 import { destroyCookie } from "nookies"
 import React, { useEffect } from "react"
 
@@ -71,17 +71,8 @@ const ListChat = (props: ListChatProps): JSX.Element => {
       userId: user?.id,
     },
   })
-  const { data: sub } = useConversationSubcription({
-    variables: {
-      userId: user?.id,
-    },
-  })
 
-  useEffect(() => {
-    if (sub?.conversationAdded) {
-      console.log("sub")
-    }
-  }, [sub?.conversationAdded])
+  console.log(data)
 
   return (
     <>
