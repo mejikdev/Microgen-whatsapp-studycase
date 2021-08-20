@@ -1,4 +1,4 @@
-import { Box, Card, Icon, Typography } from "@material-ui/core"
+import { Box, Card, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import DoneAllIcon from "@material-ui/icons/DoneAll"
 import iconDocument from "assets/icons/doc.png"
@@ -44,27 +44,24 @@ const useStyles = makeStyles({
 })
 
 type ChatTextRightProps = {
-  message?: string
-  createdAt?: string
-  file?: string
-  status?: string
+  message?: Message
 }
 
 const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
-  const { message, createdAt, file, status } = props
+  const { message } = props
   const classes = useStyles()
   return (
     <Box className={classes.parentView}>
       <Card className={classes.cardView} variant={"elevation"} elevation={0.9}>
-        {message ? (
+        {message?.text ? (
           <>
-            <Typography className={classes.userMessage}>{message}</Typography>
+            <Typography className={classes.userMessage}>{message?.text}</Typography>
           </>
         ) : (
-          file && (
+          message?.file && (
             <>
               <Box bgcolor="#7676801F" padding="5px" display="flex">
-                <a href={file}>
+                <a href={message?.file}>
                   <img src={iconDocument} alt="icon" style={{ marginRight: 5 }} />
                 </a>
                 <Typography className={classes.userMessage}>FILE</Typography>
@@ -74,10 +71,12 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
         )}
 
         <Box display="flex" textAlign="right" paddingLeft="50px">
-          <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
+          <Typography className={classes.userTime}>{moment(message?.createdAt).format("hh:mm")}</Typography>
           <DoneAllIcon
             style={
-              status === "READ" ? { fontSize: 14, marginLeft: 5, color: "#3497F9" } : { fontSize: 14, marginLeft: 5 }
+              message?.status === "READ"
+                ? { fontSize: 14, marginLeft: 5, color: "#3497F9" }
+                : { fontSize: 14, marginLeft: 5 }
             }
           />
         </Box>

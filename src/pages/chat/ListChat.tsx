@@ -72,8 +72,6 @@ const ListChat = (props: ListChatProps): JSX.Element => {
     },
   })
 
-  console.log(data)
-
   return (
     <>
       <Header child={<Title />} />

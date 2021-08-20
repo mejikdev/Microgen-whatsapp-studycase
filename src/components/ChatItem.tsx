@@ -94,8 +94,6 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
     if (conversationId) {
       handleOpenChat(conversationId, recipient)
     } else {
-      console.log("sini")
-
       try {
         await axios
           .post(process.env.REACT_APP_API_URL + "/getConversationId", {

@@ -174,7 +174,6 @@ const Chat = (props: ChatProps): JSX.Element => {
       },
     })
       .then((res) => {
-        // console.log(res)
         if (!conversationId) {
           setConversationId(res?.data?.createMessage?.conversation?.id || "")
         }
@@ -197,7 +196,6 @@ const Chat = (props: ChatProps): JSX.Element => {
         },
       })
         .then((res) => {
-          // console.log(res)
           if (!conversationId) {
             setConversationId(res?.data?.createMessage?.conversation?.id || "")
           }
@@ -211,8 +209,6 @@ const Chat = (props: ChatProps): JSX.Element => {
   }
 
   const executeScroll = () => {
-    console.log(myRef.current?.scrollIntoView())
-
     myRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
@@ -257,10 +253,11 @@ const Chat = (props: ChatProps): JSX.Element => {
             <LoadingProgress />
           ) : (
             dataMessage?.map((m, i) => {
+              if (!m) return null
               if (m.createdBy.id === user?.id) {
-                return <ChatTextRight message={m.text} createdAt={m.createdAt} file={m.file} status={m.status} />
+                return <ChatTextRight key={m.id} message={m} />
               } else {
-                return <ChatTextLeft message={m.text} createdAt={m.createdAt} file={m.file} />
+                return <ChatTextLeft key={m.id} message={m.text} createdAt={m.createdAt} file={m.file} />
               }
             })
           )}

@@ -130,7 +130,6 @@ const Verifcation: React.FC = () => {
       },
     })
       .then(() => {
-        console.log("res")
         setLoadingResend(false)
       })
       .catch((err) => {
