@@ -243,7 +243,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           ) : (
             dataMessage?.map((m, i) => {
               if (m.createdBy.id === user?.id) {
-                return <ChatTextRight message={m.text} createdAt={m.createdAt} file={m.file} />
+                return <ChatTextRight message={m.text} createdAt={m.createdAt} file={m.file} status={m.status} />
               } else {
                 return <ChatTextLeft message={m.text} createdAt={m.createdAt} file={m.file} />
               }

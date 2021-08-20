@@ -47,10 +47,11 @@ type ChatTextRightProps = {
   message?: string
   createdAt?: string
   file?: string
+  status?: string
 }
 
 const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
-  const { message, createdAt, file } = props
+  const { message, createdAt, file, status } = props
   const classes = useStyles()
   return (
     <Box className={classes.parentView}>
@@ -74,7 +75,11 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
 
         <Box display="flex" textAlign="right" paddingLeft="50px">
           <Typography className={classes.userTime}>{moment(createdAt).format("hh:mm")}</Typography>
-          <DoneAllIcon style={{ fontSize: 14, marginLeft: 5 }} />
+          <DoneAllIcon
+            style={
+              status === "READ" ? { fontSize: 14, marginLeft: 5, color: "#3497F9" } : { fontSize: 14, marginLeft: 5 }
+            }
+          />
         </Box>
       </Card>
     </Box>

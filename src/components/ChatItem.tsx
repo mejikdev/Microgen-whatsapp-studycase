@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     height: 10,
     marginTop: 6,
     display: "flex",
-    padding: 6,
+    padding: 10,
     justifyContent: "center",
     alignSelf: "center",
     backgroundColor: LIGHT_GREEN_SECOND,
@@ -152,11 +152,11 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
           }}
           primary={userTime && <Typography className={classes.userTime}>{moment(userTime).format("hh:mm")}</Typography>}
           secondary={
-            unreadMessage && (
-              <Avatar className={unreadMessage >= 0 ? classes.avatarStyle : classes.emptyAvatarStyle}>
+            unreadMessage ? (
+              <Avatar className={classes.avatarStyle}>
                 <Typography className={classes.textMsgCount}>{unreadMessage}</Typography>
               </Avatar>
-            )
+            ) : undefined
           }
         />
       </ListItem>

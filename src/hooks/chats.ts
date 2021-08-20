@@ -16,6 +16,7 @@ const query = {
         id
         text
         file
+        status
         createdAt
         createdBy {
           id
@@ -49,6 +50,7 @@ const query = {
         id
         text
         file
+        status
         createdAt
         createdBy {
           id

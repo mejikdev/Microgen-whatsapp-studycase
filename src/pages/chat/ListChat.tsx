@@ -116,6 +116,7 @@ const ListChat = (props: ListChatProps): JSX.Element => {
                 userTime={lastMassage.createdAt}
                 recipient={recipient}
                 handleOpenChat={handleOpenChat}
+                unreadMessage={conversation.unreadedMessageCount}
               />
             )
           })

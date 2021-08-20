@@ -7,6 +7,7 @@ const query = {
       conversations(where: { peopleId: $userId }, orderBy: createdAt_DESC) {
         id
         name
+        unreadedMessageCount
         messages(limit: 1, orderBy: createdAt_DESC) {
           id
           text
@@ -36,6 +37,7 @@ const query = {
       conversationAdded(where: { peopleId: $userId }) {
         id
         name
+        unreadedMessageCount
         messages(limit: 1, orderBy: createdAt_DESC) {
           id
           text

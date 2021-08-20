@@ -10,6 +10,7 @@ interface User {
 interface Conversation {
   id: string
   name: string
+  unreadedMessageCount?: number
   messages: Message[]
   people: User[]
 }
@@ -20,6 +21,7 @@ interface Message {
   file?: string
   recipient: User
   createdBy: User
+  status?: string
   createdAt: string
   conversation?: Conversation
 }
