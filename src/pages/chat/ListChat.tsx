@@ -41,6 +41,9 @@ const Title = (): JSX.Element => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
     destroyCookie(null, "token")
     window.location.href = "/public"
   }
@@ -53,8 +56,15 @@ const Title = (): JSX.Element => {
       <IconButton size="small" style={{ color: "white" }} onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
-      <Menu id="long-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-        <MenuItem key={"Logout"} onClick={handleClose}>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MenuItem key={"Logout"} onClick={handleLogout}>
           Logout
         </MenuItem>
       </Menu>
