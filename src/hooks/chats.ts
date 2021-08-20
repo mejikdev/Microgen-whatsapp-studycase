@@ -24,6 +24,13 @@ const query = {
         createdBy {
           id
         }
+        recipient {
+          id
+          firstName
+        }
+        conversation {
+          id
+        }
       }
     }
   `,
@@ -33,16 +40,17 @@ const query = {
         id
         text
         file
+        status
+        createdAt
+        createdBy {
+          id
+        }
         recipient {
           id
           firstName
         }
         conversation {
           id
-          people {
-            id
-            firstName
-          }
         }
       }
     }
@@ -56,6 +64,13 @@ const query = {
         status
         createdAt
         createdBy {
+          id
+        }
+        recipient {
+          id
+          firstName
+        }
+        conversation {
           id
         }
       }
