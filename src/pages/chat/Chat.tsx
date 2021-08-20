@@ -160,7 +160,7 @@ const Chat = (props: ChatProps): JSX.Element => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const { text } = data
-    if (!dataChat?.recipient) return null
+    if (!dataChat?.recipient || !text.trim()) return null
     sendChat({
       variables: {
         text,
@@ -251,6 +251,8 @@ const Chat = (props: ChatProps): JSX.Element => {
           )}
         </Box>
 
+        <Box display="none" />
+
         <Box
           //   ref={inputRef}
           style={{
@@ -269,6 +271,12 @@ const Chat = (props: ChatProps): JSX.Element => {
               <TextareaAutosize
                 className={classes.userMessage}
                 placeholder="Type a message ..."
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    onSubmit({ text: e.currentTarget.value })
+                  }
+                }}
                 {...register("text", { required: true })}
               />
               <input type="file" style={{ display: "none" }} id="icon-button-file" onChange={(e) => onSendFile(e)} />
