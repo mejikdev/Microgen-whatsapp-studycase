@@ -9,7 +9,7 @@ import ChatTextRight from "components/ChatTextRight"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
 import { ChatMutation, ChatsQuery, ChatSubcription } from "hooks/chats"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FONT_INPUT, GREY_BG_INPUT, WHITE } from "utils/colors"
 
@@ -122,6 +122,7 @@ const Title = (props: TitleProps): JSX.Element => {
 const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
+  const myRef = useRef<HTMLHeadingElement>(null)
   const { register, reset, handleSubmit } = useForm<Inputs>()
   const [dataMessage, setDataMessage] = useState<Message[]>([])
   const [conversationId, setConversationId] = useState<string>()
@@ -147,7 +148,11 @@ const Chat = (props: ChatProps): JSX.Element => {
   // set first data messages
   useEffect(() => {
     if (data?.messages) {
+      console.log("sini")
+      console.log(data?.messages)
+
       setDataMessage(data?.messages)
+      executeScroll()
     }
   }, [data])
 
@@ -155,6 +160,7 @@ const Chat = (props: ChatProps): JSX.Element => {
   useEffect(() => {
     if (sub?.messageAdded) {
       setDataMessage([...dataMessage, sub?.messageAdded])
+      executeScroll()
     }
   }, [sub?.messageAdded])
 
@@ -205,6 +211,16 @@ const Chat = (props: ChatProps): JSX.Element => {
     }
   }
 
+  const executeScroll = () => {
+    console.log(myRef.current?.scrollIntoView())
+
+    myRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "start",
+    })
+  }
+
   return (
     <>
       <Header child={<Title recipient={dataChat?.recipient} handleBack={handleBack} />} />
@@ -251,10 +267,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           )}
         </Box>
 
-        <Box display="none" />
-
         <Box
-          //   ref={inputRef}
           style={{
             zIndex: 2000,
             width: "100%",
