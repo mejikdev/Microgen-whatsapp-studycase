@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 import smsIconSvg from "assets/icons/sms.svg"
 import ChatItem from "components/ChatItem"
+import EmptyChat from "components/EmptyChat"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
 import { useConversationQuery, useConversationSubcription } from "hooks/conversation"
@@ -89,10 +90,22 @@ const ListChat = (props: ListChatProps): JSX.Element => {
       <Box>
         {loading ? (
           <LoadingProgress />
+        ) : data?.conversations?.length === 0 ? (
+          <EmptyChat />
         ) : (
           data?.conversations.map((conversation: Conversation) => {
             const { people, messages } = conversation
-            const recipient = people[0]
+
+            let recipient = {
+              id: "",
+              email: "",
+              firstName: "",
+              role: "",
+              avatar: "",
+              phoneNumber: "",
+            }
+
+            recipient = people[0]
 
             let lastMassage: Message = {
               id: "default Message",

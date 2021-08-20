@@ -1,4 +1,5 @@
 import {
+  MutationHookOptions,
   MutationResult,
   QueryHookOptions,
   QueryResult,
@@ -7,12 +8,14 @@ import {
   useQuery,
   useSubscription,
 } from "@apollo/react-hooks"
+import { FetchResult } from "apollo-boost"
 import { gql } from "graphql-tag"
 
+// TODO dynamic limit get messages
 const query = {
   getChat: gql`
     query getMessages($conversationId: String) {
-      messages(where: { conversationId: $conversationId }) {
+      messages(where: { conversationId: $conversationId }, limit: 50) {
         id
         text
         file
@@ -67,12 +70,16 @@ type ChatQueryResult = QueryResult<
   Record<string, User>
 >
 
+type ChatMutationResult = {
+  sendChat: (options: MutationHookOptions) => Promise<FetchResult<{ createMessage: Message }>>
+}
+
 function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
   const chats = useQuery<{ messages: Message[] }>(query.getChat, options)
   return chats
 }
 
-function ChatMutation() {
+function ChatMutation(): ChatMutationResult {
   const [sendChat] = useMutation<{ createMessage: Message }>(query.sendChat)
   return { sendChat }
 }
