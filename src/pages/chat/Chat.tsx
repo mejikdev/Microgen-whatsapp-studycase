@@ -308,7 +308,7 @@ const Chat = (props: ChatProps): JSX.Element => {
                 </label>
               </Box>
               {/* </IconButton> */}
-              <IconButton type="submit" size="small">
+              <IconButton type="submit" size="small" style={{ backgroundColor: "transparent" }}>
                 <SendIcon />
               </IconButton>
             </Box>
