@@ -106,16 +106,22 @@ const ChatTextRight = (props: ChatTextRightProps): JSX.Element => {
           </MenuItem>
         </Menu>
 
-        <Box display="flex" textAlign="right" paddingLeft="70px">
-          <Typography className={classes.userTime}>{moment(message?.createdAt).format("hh:mm")}</Typography>
-          <DoneAllIcon
-            style={
-              message?.status === "READ"
-                ? { fontSize: 14, marginLeft: 5, color: "#3497F9" }
-                : { fontSize: 14, marginLeft: 5 }
-            }
-          />
-        </Box>
+        {message?.status === "SENDING" ? (
+          <Box display="flex" textAlign="right" paddingLeft="70px">
+            <Typography className={classes.userTime}>sending ...</Typography>
+          </Box>
+        ) : (
+          <Box display="flex" textAlign="right" paddingLeft="70px">
+            <Typography className={classes.userTime}>{moment(message?.createdAt).format("hh:mm")}</Typography>
+            <DoneAllIcon
+              style={
+                message?.status === "READ"
+                  ? { fontSize: 14, marginLeft: 5, color: "#3497F9" }
+                  : { fontSize: 14, marginLeft: 5 }
+              }
+            />
+          </Box>
+        )}
       </Card>
     </Box>
   )
