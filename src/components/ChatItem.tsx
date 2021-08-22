@@ -25,7 +25,6 @@ const useStyles = makeStyles({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
-    fontFamily: "Roboto",
   },
   userTime: {
     fontSize: 12,
