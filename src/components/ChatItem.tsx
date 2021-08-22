@@ -91,6 +91,7 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
   const classes = useStyles()
 
   const handleClick = async () => {
+    if (!recipient?.id) return null
     if (conversationId) {
       handleOpenChat(conversationId, recipient)
     } else {

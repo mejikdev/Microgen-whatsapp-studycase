@@ -98,13 +98,15 @@ const ListChat = (props: ListChatProps): JSX.Element => {
             let recipient = {
               id: "",
               email: "",
-              firstName: "",
+              firstName: "User not found",
               role: "",
               avatar: "",
               phoneNumber: "",
             }
 
-            recipient = people[0]
+            if (Array.isArray(people) && people.length) {
+              recipient = people[0]
+            }
 
             let lastMassage: Message = {
               id: "default Message",
