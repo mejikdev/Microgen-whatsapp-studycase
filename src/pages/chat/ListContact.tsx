@@ -4,7 +4,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import ChatItem from "components/ChatItem"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { ContactQuery } from "hooks/listContact"
+import { ContactQuery } from "hooks/contact"
 import React from "react"
 
 const useStyles = makeStyles({
@@ -54,6 +54,7 @@ const ListContact = (props: ListContactProps): JSX.Element => {
     variables: {
       userId: user?.id,
     },
+    fetchPolicy: "network-only",
   })
 
   return (
@@ -64,7 +65,8 @@ const ListContact = (props: ListContactProps): JSX.Element => {
         {loading ? (
           <LoadingProgress />
         ) : (
-          data?.users.map((u) => (
+          data?.contacts[0] &&
+          data?.contacts[0].users.map((u) => (
             <ChatItem
               key={u.id}
               userName={u.firstName}

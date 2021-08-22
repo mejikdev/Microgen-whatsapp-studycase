@@ -25,3 +25,8 @@ interface Message {
   createdAt: string
   conversation?: Conversation
 }
+
+interface Contact {
+  id: string
+  users: User[]
+}
