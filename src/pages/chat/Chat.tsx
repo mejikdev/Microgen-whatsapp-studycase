@@ -2,12 +2,13 @@ import { Avatar, Box, IconButton, TextareaAutosize, Typography } from "@material
 import { makeStyles } from "@material-ui/core/styles"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import AttachFileIcon from "@material-ui/icons/AttachFile"
+import DeleteIcon from "@material-ui/icons/Delete"
 import SendIcon from "@material-ui/icons/Send"
 import BgWa from "assets/images/bgWA.png"
-import ChatTextLeft from "components/ChatTextLeft"
-import ChatTextRight from "components/ChatTextRight"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
+import MessageTextLeft from "components/MessageTextLeft"
+import MessageTextRight from "components/MessageTextRight"
 import { ChatMutation, ChatsQuery, ChatSubcription } from "hooks/chats"
 import React, { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -27,11 +28,29 @@ type TitleProps = {
   handleBack: () => void
 }
 
+type TitleDeletedProps = {
+  setIsDeleted: React.Dispatch<React.SetStateAction<string[] | []>>
+  isDeleted: string[]
+  handleDelete: () => void
+}
+
 type Inputs = {
   text: string
 }
 
 const useStyles = makeStyles({
+  containerListChat: {
+    "&::-webkit-scrollbar": {
+      width: "0em",
+    },
+    position: "absolute",
+    zIndex: 1000,
+    height: "85%",
+    width: "100%",
+    paddingTop: 20,
+    overflow: "auto",
+    paddingBottom: 20,
+  },
   parentView: {
     width: "100%",
     height: "8%",
@@ -52,7 +71,7 @@ const useStyles = makeStyles({
     fontSize: 20,
     color: WHITE,
     fontWeight: 500,
-    paddingLeft: 24,
+    paddingLeft: 20,
   },
   parentInput: {
     backgroundColor: GREY_BG_INPUT,
@@ -119,6 +138,38 @@ const Title = (props: TitleProps): JSX.Element => {
   )
 }
 
+const TitleDeleted = (props: TitleDeletedProps): JSX.Element => {
+  const classes = useStyles()
+  const { isDeleted, setIsDeleted, handleDelete } = props
+
+  return (
+    <>
+      <Box className={classes.parentView}>
+        <Box style={{ display: "flex", alignSelf: "center", paddingRight: 10 }}>
+          <IconButton onClick={() => setIsDeleted([])} style={{ padding: 0 }}>
+            <ArrowBackIcon fontSize="medium" style={{ color: WHITE }} />
+          </IconButton>
+        </Box>
+        <Box
+          style={{
+            display: "flex",
+            width: "76%",
+            flexDirection: "column",
+            alignSelf: "center",
+          }}
+        >
+          <Typography className={classes.userName}>{isDeleted?.length}</Typography>
+        </Box>
+        <Box alignSelf="center">
+          <IconButton size="small" onClick={handleDelete}>
+            <DeleteIcon fontSize="medium" style={{ color: "white" }} />
+          </IconButton>
+        </Box>
+      </Box>
+    </>
+  )
+}
+
 const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
@@ -126,6 +177,7 @@ const Chat = (props: ChatProps): JSX.Element => {
   const { register, reset, handleSubmit } = useForm<Inputs>()
   const [dataMessage, setDataMessage] = useState<Message[]>([])
   const [conversationId, setConversationId] = useState<string>()
+  const [isDeleted, setIsDeleted] = useState<string[] | []>([])
   const { data, loading } = ChatsQuery({
     variables: {
       skip: !conversationId,
@@ -133,7 +185,7 @@ const Chat = (props: ChatProps): JSX.Element => {
     },
     fetchPolicy: "network-only",
   })
-  const { sendChat, deleteChat } = ChatMutation()
+  const { sendChat, deleteChats } = ChatMutation()
   const { data: sub } = ChatSubcription({
     variables: {
       conversationId: conversationId,
@@ -209,12 +261,14 @@ const Chat = (props: ChatProps): JSX.Element => {
   }
 
   // TODO handle error
-  const handleDelete = async (id?: string) => {
-    const newDataMessage = dataMessage.filter((m) => m.id !== id)
-    setDataMessage(newDataMessage)
-    deleteChat({
+  const handleDelete = async () => {
+    const isDeletedData = isDeleted as string[]
+    const newDataMesssage = dataMessage.filter((m) => !isDeletedData.includes(m.id))
+    setDataMessage(newDataMesssage)
+    setIsDeleted([])
+    deleteChats({
       variables: {
-        id,
+        ids: isDeleted,
       },
     })
   }
@@ -229,7 +283,15 @@ const Chat = (props: ChatProps): JSX.Element => {
 
   return (
     <>
-      <Header child={<Title recipient={dataChat?.recipient} handleBack={handleBack} />} />
+      <Header
+        child={
+          isDeleted?.length ? (
+            <TitleDeleted isDeleted={isDeleted} setIsDeleted={setIsDeleted} handleDelete={handleDelete} />
+          ) : (
+            <Title recipient={dataChat?.recipient} handleBack={handleBack} />
+          )
+        }
+      />
 
       <Box
         style={{
@@ -237,7 +299,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           flexDirection: "column",
           width: "100%",
           background: "url(" + BgWa + ")",
-          height: "91%",
+          height: "92%",
         }}
       >
         <Box
@@ -249,27 +311,16 @@ const Chat = (props: ChatProps): JSX.Element => {
           }}
         />
 
-        <Box
-          style={{
-            position: "absolute",
-            zIndex: 1000,
-            height: "85%",
-            width: "100%",
-            paddingTop: 20,
-            overflow: "auto",
-            paddingBottom: 20,
-          }}
-        >
+        <Box className={classes.containerListChat}>
           {loading ? (
             <LoadingProgress />
           ) : (
             dataMessage?.map((m, i) => {
               if (!m) return null
-              if (m.createdBy.id === user?.id) {
-                return <ChatTextRight key={m.id} message={m} handleDelete={handleDelete} />
+              if (m.createdBy?.id === user?.id) {
+                return <MessageTextRight key={m.id} message={m} isDeleted={isDeleted} setIsDeleted={setIsDeleted} />
               } else {
-                // TODO refactor props same as chat right
-                return <ChatTextLeft key={m.id} message={m.text} createdAt={m.createdAt} file={m.file} />
+                return <MessageTextLeft key={m.id} message={m} />
               }
             })
           )}

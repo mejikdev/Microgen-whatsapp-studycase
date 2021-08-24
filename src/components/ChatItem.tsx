@@ -25,7 +25,6 @@ const useStyles = makeStyles({
     textOverflow: "ellipsis",
     overflow: "hidden",
     whiteSpace: "nowrap",
-    fontFamily: "Roboto",
   },
   userTime: {
     fontSize: 12,
@@ -91,6 +90,7 @@ const ChatItem = (props: ChatItemProps): JSX.Element => {
   const classes = useStyles()
 
   const handleClick = async () => {
+    if (!recipient?.id) return null
     if (conversationId) {
       handleOpenChat(conversationId, recipient)
     } else {

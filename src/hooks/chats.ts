@@ -76,9 +76,11 @@ const query = {
     }
   `,
   deleteChat: gql`
-    mutation deleteMessage($id: String!) {
-      deleteMessage(id: $id) {
-        id
+    mutation messagesDeleted($ids: [ID]!) {
+      deleteMessages(ids: $ids) {
+        results {
+          id
+        }
       }
     }
   `,
@@ -91,9 +93,13 @@ type ChatQueryResult = QueryResult<
   Record<string, User>
 >
 
+type DeleteMessages = {
+  results: Message[]
+}
+
 type ChatMutationResult = {
   sendChat: (options: MutationHookOptions) => Promise<FetchResult<{ createMessage: Message }>>
-  deleteChat: (options: MutationHookOptions) => Promise<FetchResult<{ deleteMessage: Message }>>
+  deleteChats: (options: MutationHookOptions) => Promise<FetchResult<{ deleteMessages: DeleteMessages }>>
 }
 
 function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
@@ -103,8 +109,8 @@ function ChatsQuery(options: QueryHookOptions): ChatQueryResult {
 
 function ChatMutation(): ChatMutationResult {
   const [sendChat] = useMutation<{ createMessage: Message }>(query.sendChat)
-  const [deleteChat] = useMutation<{ deleteMessage: Message }>(query.deleteChat)
-  return { sendChat, deleteChat }
+  const [deleteChats] = useMutation<{ deleteMessages: DeleteMessages }>(query.deleteChat)
+  return { sendChat, deleteChats }
 }
 
 // subcription expect result

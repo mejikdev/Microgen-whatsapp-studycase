@@ -7,12 +7,10 @@ import { GREY } from "utils/colors"
 const useStyles = makeStyles({
   parent: {
     width: "100%",
-    height: "100%",
     flexDirection: "column",
     alignItems: "center",
     alignSelf: "center",
     display: "flex",
-    fontFamily: "Roboto",
     flex: 1,
     position: "absolute",
     top: 250,
@@ -24,7 +22,6 @@ const useStyles = makeStyles({
     justifyContent: "center",
     color: GREY,
     marginBottom: "3%",
-    fontFamily: "Roboto",
   },
 })
 
