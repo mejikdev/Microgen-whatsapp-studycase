@@ -10,7 +10,7 @@ interface User {
 interface Conversation {
   id: string
   name: string
-  unreadedMessageCount?: number
+  unreadedMessageCount: number
   messages: Message[]
   people: User[]
 }

@@ -5,8 +5,9 @@ import ChatItem from "components/ChatItem"
 import EmptyChat from "components/EmptyChat"
 import Header from "components/Header"
 import LoadingProgress from "components/LoadingProgress"
-import { useConversationQuery } from "hooks/conversation"
-import React from "react"
+import { useConversationQuery, useConversationSubcription } from "hooks/conversation"
+import useForceUpdate from "hooks/useForceUpdate"
+import React, { useEffect, useState } from "react"
 
 const useStyles = makeStyles({
   startMessage: {
@@ -39,15 +40,70 @@ const Title = (): JSX.Element => {
   )
 }
 
+function arraymove(arr: [], fromIndex: number, toIndex: number) {
+  const element = arr[fromIndex]
+  arr.splice(fromIndex, 1)
+  arr.splice(toIndex, 0, element)
+}
+
 const ListChat = (props: ListChatProps): JSX.Element => {
   const { user, handleOpenChat, handleOpenContact } = props
   const classes = useStyles()
+  const forceUpdate = useForceUpdate()
+  const [conversationId, setConversationId] = useState<{ conversationId: string }[]>()
+  const [conversations, setConversation] = useState<Conversation[]>([])
   const { data, loading } = useConversationQuery({
     skip: !user?.id,
     variables: {
       userId: user?.id,
     },
   })
+  const { data: sub } = useConversationSubcription({
+    skip: !conversationId?.length,
+    variables: {
+      conversationId,
+    },
+  })
+
+  useEffect(() => {
+    const dataConversations = data?.conversations
+    if (dataConversations) {
+      setConversation(dataConversations)
+      const conversationId = dataConversations.map((conversation) => {
+        return {
+          conversationId: conversation.id,
+        }
+      })
+      setConversationId(conversationId)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (sub?.messagesAdded?.length) {
+      console.log("sub")
+      sub.messagesAdded.map((message) => {
+        const findIndex = conversations.findIndex((conversation) => conversation.id === message?.conversation?.id)
+        console.log(findIndex)
+        if (findIndex >= 0) {
+          conversations[findIndex].unreadedMessageCount += 1
+          const converstaionsMessage = conversations[findIndex].messages[0]
+          if (converstaionsMessage) {
+            conversations[findIndex].messages[0] = {
+              ...converstaionsMessage,
+              text: message?.text,
+              file: message?.file,
+              createdAt: message?.createdAt,
+            }
+          }
+          arraymove(conversations as [], findIndex, 0)
+          setConversation((preventValue) => preventValue)
+          forceUpdate()
+        }
+      })
+    }
+  }, [sub])
+
+  console.log(conversations)
 
   return (
     <>
@@ -56,10 +112,10 @@ const ListChat = (props: ListChatProps): JSX.Element => {
       <Box>
         {loading ? (
           <LoadingProgress />
-        ) : data?.conversations?.length === 0 ? (
+        ) : conversations.length === 0 ? (
           <EmptyChat />
         ) : (
-          data?.conversations.map((conversation: Conversation) => {
+          conversations.map((conversation: Conversation) => {
             const { people, messages } = conversation
 
             let recipient = {

@@ -1,4 +1,4 @@
-import { QueryHookOptions, QueryResult, useQuery } from "@apollo/react-hooks"
+import { QueryHookOptions, QueryResult, SubscriptionHookOptions, useQuery, useSubscription } from "@apollo/react-hooks"
 import { gql } from "graphql-tag"
 
 const query = {
@@ -33,31 +33,14 @@ const query = {
     }
   `,
   subcriptionConversation: gql`
-    subscription listAdded($userId: String) {
-      conversationAdded(where: { peopleId: $userId }) {
+    subscription ($conversationId: [MessageFilter]) {
+      messagesAdded(or: $conversationId) {
         id
-        name
-        unreadedMessageCount
-        messages(limit: 1, orderBy: createdAt_DESC) {
+        text
+        file
+        createdAt
+        conversation {
           id
-          text
-          file
-          recipient {
-            id
-            firstName
-            avatar
-          }
-          createdBy {
-            id
-            firstName
-            avatar
-          }
-          createdAt
-        }
-        people(where: { id_not: $userId }) {
-          id
-          firstName
-          avatar
         }
       }
     }
@@ -75,4 +58,8 @@ function useConversationQuery(options: QueryHookOptions): ConversationQueryResul
   return useQuery<{ conversations: Conversation[] }>(query.getConversations, options)
 }
 
-export { useConversationQuery }
+function useConversationSubcription(options: SubscriptionHookOptions) {
+  return useSubscription<{ messagesAdded: Message[] }>(query.subcriptionConversation, options)
+}
+
+export { useConversationQuery, useConversationSubcription }
