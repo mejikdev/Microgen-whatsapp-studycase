@@ -203,22 +203,35 @@ const Chat = (props: ChatProps): JSX.Element => {
   useEffect(() => {
     if (data?.messages) {
       setDataMessage(data?.messages)
-      executeScroll()
     }
-  }, [data])
+  }, [data?.messages])
 
   // subcription data messages
   useEffect(() => {
-    if (sub?.messageAdded) {
-      setDataMessage([...dataMessage, sub?.messageAdded])
-      executeScroll()
+    async function newMessage() {
+      if (sub?.messageAdded) {
+        const indexSending = dataMessage.findIndex((m) => m.status === "SENDING")
+        const newData = {
+          ...dataMessage[indexSending],
+          ...sub?.messageAdded,
+        }
+        dataMessage[indexSending] = newData
+        setDataMessage(dataMessage)
+      }
     }
+
+    newMessage()
   }, [sub?.messageAdded])
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { text } = data
     if (!dataChat?.recipient || !text.trim()) return null
-    sendChat({
+    setDataMessage([
+      ...dataMessage,
+      { id: "", text: text, recipient: dataChat?.recipient, status: "SENDING", createdBy: user, createdAt: "now" },
+    ])
+    reset()
+    await sendChat({
       variables: {
         text,
         recipientId: dataChat?.recipient?.id,
@@ -229,11 +242,9 @@ const Chat = (props: ChatProps): JSX.Element => {
         if (!conversationId) {
           setConversationId(res?.data?.createMessage?.conversation?.id || "")
         }
-        reset()
       })
       .catch((err) => {
         console.log(err)
-        reset()
       })
   }
 
@@ -270,14 +281,6 @@ const Chat = (props: ChatProps): JSX.Element => {
       variables: {
         ids: isDeleted,
       },
-    })
-  }
-
-  const executeScroll = () => {
-    myRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "start",
     })
   }
 
@@ -318,9 +321,9 @@ const Chat = (props: ChatProps): JSX.Element => {
             dataMessage?.map((m, i) => {
               if (!m) return null
               if (m.createdBy?.id === user?.id) {
-                return <MessageTextRight key={m.id} message={m} isDeleted={isDeleted} setIsDeleted={setIsDeleted} />
+                return <MessageTextRight key={i} message={m} isDeleted={isDeleted} setIsDeleted={setIsDeleted} />
               } else {
-                return <MessageTextLeft key={m.id} message={m} />
+                return <MessageTextLeft key={i} message={m} />
               }
             })
           )}

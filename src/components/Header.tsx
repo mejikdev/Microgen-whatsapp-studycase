@@ -6,7 +6,7 @@ const useStyles = makeStyles({
   parentHeader: {
     display: "flex",
     justifyContent: "start",
-    padding: "20px 15px",
+    padding: "15px 15px",
     backgroundColor: "#075E55",
     color: "#FFFFFF",
   },

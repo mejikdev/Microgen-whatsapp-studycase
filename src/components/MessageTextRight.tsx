@@ -1,6 +1,7 @@
 import { Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import DoneAllIcon from "@material-ui/icons/DoneAll"
+import WatchLaterOutlinedIcon from "@material-ui/icons/WatchLaterOutlined"
 import iconDocument from "assets/icons/doc.png"
 import useLongPress from "hooks/useLoongPress"
 import moment from "moment"
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     color: " #dcf8c6",
     position: "absolute",
     top: -2,
-    zIndex: 100,
+    zIndex: 200,
     display: "block",
     width: 8,
     height: 14,
@@ -81,22 +82,24 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
   const { message, setIsDeleted, isDeleted } = props
 
   const onLongPress = () => {
-    if (isDeleted.includes(message?.id || "")) {
+    if (!message?.id) return null
+    if (isDeleted.includes(message?.id)) {
       setIsDeleted(isDeleted.filter((i) => i !== message?.id))
     } else {
       setIsDeleted((prevState) => {
-        return [...prevState, message?.id || ""]
+        return [...prevState, message?.id]
       })
     }
   }
 
   const onClick = () => {
+    if (!message?.id) return null
     if (isDeleted.length) {
-      if (isDeleted.includes(message?.id || "")) {
+      if (isDeleted.includes(message?.id)) {
         setIsDeleted(isDeleted.filter((i) => i !== message?.id))
       } else {
         setIsDeleted((prevState) => {
-          return [...prevState, message?.id || ""]
+          return [...prevState, message?.id]
         })
       }
     }
@@ -105,11 +108,14 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
   const longPressEvent = useLongPress(onLongPress, onClick, { shouldPreventDefault: true, delay: 500 })
 
   return (
-    <>
-      <Box
-        className={classes.parentView}
-        style={isDeleted.includes(message?.id || "") ? { backgroundColor: " rgba(115, 188, 176, 0.4)" } : undefined}
-      >
+    <Box
+      style={
+        isDeleted.includes(message?.id || "")
+          ? { backgroundColor: " rgba(115, 188, 176, 0.4)", zIndex: 9999 }
+          : undefined
+      }
+    >
+      <Box className={classes.parentView}>
         <Box className={classes.wrapper}>
           <span className={classes.tailOut}>
             <svg viewBox="0 0 8 13" width="8" height="13">
@@ -155,7 +161,7 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
                       verticalAlign: "top",
                     }}
                   >
-                    sending ...
+                    <WatchLaterOutlinedIcon style={{ fontSize: 14 }} />
                   </span>
                 </Box>
               ) : (
@@ -193,7 +199,7 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
 

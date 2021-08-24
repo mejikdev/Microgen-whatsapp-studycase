@@ -20,7 +20,7 @@ interface Message {
   text?: string
   file?: string
   recipient: User
-  createdBy: User
+  createdBy?: User
   status?: string
   createdAt: string
   conversation?: Conversation

@@ -75,16 +75,17 @@ const ListChat = (props: ListChatProps): JSX.Element => {
               recipient = people[0]
             }
 
-            let lastMassage: Message = {
+            let lastMessage: Message = {
               id: "default Message",
               text: "",
+              file: "",
               createdAt: new Date().toString(),
               recipient: recipient,
               createdBy: recipient,
             }
 
             if (Array.isArray(messages) && messages.length) {
-              lastMassage = messages[0]
+              lastMessage = messages[0]
             }
 
             return (
@@ -92,9 +93,9 @@ const ListChat = (props: ListChatProps): JSX.Element => {
                 key={conversation.id}
                 conversationId={conversation.id}
                 userName={recipient.firstName}
-                userMessage={lastMassage.text || "FILE"}
+                userMessage={lastMessage.text || (lastMessage?.file && "File")}
                 userAvatar={recipient.avatar}
-                userTime={lastMassage.createdAt}
+                userTime={lastMessage.createdAt}
                 recipient={recipient}
                 handleOpenChat={handleOpenChat}
                 unreadMessage={conversation.unreadedMessageCount}

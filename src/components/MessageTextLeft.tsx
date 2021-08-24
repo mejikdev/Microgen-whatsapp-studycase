@@ -138,21 +138,6 @@ const MessageTextLeft = (props: MessageTextLeftProps): JSX.Element => {
                     >
                       {moment(message?.createdAt).format("hh:mm")}
                     </span>
-                    <Box
-                      className="_2F01v"
-                      style={{
-                        marginLeft: 3,
-                        display: "inline-block",
-                      }}
-                    >
-                      <DoneAllIcon
-                        style={
-                          message?.status === "READ"
-                            ? { fontSize: 14, marginLeft: 5, color: "#3497F9" }
-                            : { fontSize: 14, marginLeft: 5 }
-                        }
-                      />
-                    </Box>
                   </Box>
                 </Box>
               )}
