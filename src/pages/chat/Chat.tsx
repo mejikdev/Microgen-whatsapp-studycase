@@ -317,7 +317,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           ) : (
             dataMessage?.map((m, i) => {
               if (!m) return null
-              if (m.createdBy.id === user?.id) {
+              if (m.createdBy?.id === user?.id) {
                 return <MessageTextRight key={m.id} message={m} isDeleted={isDeleted} setIsDeleted={setIsDeleted} />
               } else {
                 return <MessageTextLeft key={m.id} message={m} />
