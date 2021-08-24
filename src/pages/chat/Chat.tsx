@@ -245,13 +245,21 @@ const Chat = (props: ChatProps): JSX.Element => {
         },
       })
 
+      const createdMessage = res?.data?.createMessage
+
+      if (!createdMessage) {
+        throw new Error("Failed send message")
+      }
+
       if (!conversationId) {
-        setConversationId(res?.data?.createMessage?.conversation?.id || "")
+        setConversationId(createdMessage.conversation?.id || "")
       }
 
       const updatedMessages = newMessages.map((message) => {
+        console.log(message?.id, temporaryId)
         if (message.id === temporaryId) {
-          message.status = res.data?.createMessage.status
+          message.id = createdMessage.id
+          message.status = createdMessage.status
         }
         return message
       })
