@@ -260,6 +260,8 @@ const Chat = (props: ChatProps): JSX.Element => {
         if (message.id === temporaryId) {
           message.id = createdMessage.id
           message.status = createdMessage.status
+          message.file = createdMessage.file
+          message.createdAt = createdMessage.createdAt
         }
         return message
       })

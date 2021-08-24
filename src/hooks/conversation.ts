@@ -4,7 +4,7 @@ import { gql } from "graphql-tag"
 const query = {
   getConversations: gql`
     query getConversations($userId: String) {
-      conversations(where: { peopleId: $userId }, orderBy: createdAt_DESC) {
+      conversations(where: { peopleId: $userId }, orderBy: updatedAt_DESC) {
         id
         name
         unreadedMessageCount
