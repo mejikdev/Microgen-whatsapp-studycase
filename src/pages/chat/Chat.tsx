@@ -210,13 +210,14 @@ const Chat = (props: ChatProps): JSX.Element => {
   useEffect(() => {
     async function newMessage() {
       if (sub?.messageAdded) {
-        const indexSending = dataMessage.findIndex((m) => m.status === "SENDING")
+        const indexSending = await dataMessage.findIndex((m) => m.status === "SENDING")
         const newData = {
           ...dataMessage[indexSending],
           ...sub?.messageAdded,
         }
-        dataMessage[indexSending] = newData
-        setDataMessage(dataMessage)
+        if (~indexSending) {
+          dataMessage[indexSending] = newData
+        }
       }
     }
 
@@ -226,10 +227,14 @@ const Chat = (props: ChatProps): JSX.Element => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { text } = data
     if (!dataChat?.recipient || !text.trim()) return null
-    setDataMessage([
-      ...dataMessage,
-      { id: "", text: text, recipient: dataChat?.recipient, status: "SENDING", createdBy: user, createdAt: "now" },
-    ])
+    dataMessage.push({
+      id: "",
+      text: text,
+      recipient: dataChat?.recipient,
+      status: "SENDING",
+      createdBy: user,
+      createdAt: "now",
+    })
     reset()
     await sendChat({
       variables: {
