@@ -8,6 +8,7 @@ interface responVerify {
 
 interface verifyLoginWithPhone {
   token: string
+  users: User
 }
 
 const query = {
