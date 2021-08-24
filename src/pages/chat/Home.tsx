@@ -36,7 +36,7 @@ const Home = (props: HomeProps): JSX.Element => {
     if (!user?.firstName) {
       history.push("/setProfile")
     }
-  }, [user, history])
+  }, [user])
 
   const handleOpenChat = (conversationId?: string, recipient?: User) => {
     setMode("CHAT")
