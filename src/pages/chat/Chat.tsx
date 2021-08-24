@@ -174,8 +174,8 @@ const Chat = (props: ChatProps): JSX.Element => {
   const { user, dataChat, handleBack } = props
   const classes = useStyles()
   const myRef = useRef<HTMLHeadingElement>(null)
-  const { register, reset, handleSubmit } = useForm<Inputs>()
-  const [dataMessage, setDataMessage] = useState<Message[]>([])
+  const { register, reset: resetInput, handleSubmit } = useForm<Inputs>()
+  const [messages, setMessages] = useState<Message[]>([])
   const [conversationId, setConversationId] = useState<string>()
   const [isDeleted, setIsDeleted] = useState<string[] | []>([])
   const { data, loading } = ChatsQuery({
@@ -192,95 +192,95 @@ const Chat = (props: ChatProps): JSX.Element => {
     },
   })
 
-  // initial set converstation id
   useEffect(() => {
     if (!conversationId) {
       setConversationId(dataChat?.conversationId || "")
     }
-  }, [dataChat?.conversationId])
+  }, [conversationId, dataChat?.conversationId])
 
-  // set first data messages
   useEffect(() => {
     if (data?.messages) {
-      setDataMessage(data?.messages)
+      setMessages(data?.messages)
     }
   }, [data?.messages])
 
-  // subcription data messages
   useEffect(() => {
-    async function newMessage() {
-      if (sub?.messageAdded) {
-        const indexSending = await dataMessage.findIndex((m) => m.status === "SENDING")
-        const newData = {
-          ...dataMessage[indexSending],
-          ...sub?.messageAdded,
-        }
-        if (~indexSending) {
-          dataMessage[indexSending] = newData
-        }
+    function newMessage() {
+      if (sub?.messageAdded && sub.messageAdded.recipient?.id === user?.id) {
+        const newMessages = [...messages, sub.messageAdded]
+        setMessages(newMessages)
       }
     }
 
     newMessage()
-  }, [sub?.messageAdded])
+  }, [sub])
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const { text } = data
-    if (!dataChat?.recipient || !text.trim()) return null
-    dataMessage.push({
-      id: "",
+  const sendMessage = async (message: Partial<Message>) => {
+    if (!dataChat?.recipient) {
+      throw new Error("Uknown recipient")
+    }
+    const { text, file } = message
+    const temporaryId = new Date().getTime().toString()
+    const newMessages = [...messages]
+    newMessages.push({
+      id: temporaryId,
       text: text,
       recipient: dataChat?.recipient,
+      file: file,
       status: "SENDING",
       createdBy: user,
-      createdAt: "now",
+      createdAt: new Date().toString(),
     })
-    reset()
-    await sendChat({
-      variables: {
-        text,
-        recipientId: dataChat?.recipient?.id,
-        conversationId: conversationId,
-      },
-    })
-      .then((res) => {
-        if (!conversationId) {
-          setConversationId(res?.data?.createMessage?.conversation?.id || "")
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
 
-  const onSendFile = async (e: React.FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files !== null) {
-      const file = e.currentTarget.files[0]
-      sendChat({
+    setMessages(newMessages)
+    resetInput()
+
+    try {
+      const res = await sendChat({
         variables: {
+          text,
           file,
           recipientId: dataChat?.recipient?.id,
           conversationId: conversationId,
         },
       })
-        .then((res) => {
-          if (!conversationId) {
-            setConversationId(res?.data?.createMessage?.conversation?.id || "")
-          }
-          reset()
-        })
-        .catch((err) => {
-          console.log(err)
-          reset()
-        })
+
+      if (!conversationId) {
+        setConversationId(res?.data?.createMessage?.conversation?.id || "")
+      }
+
+      const updatedMessages = newMessages.map((message) => {
+        if (message.id === temporaryId) {
+          message.status = res.data?.createMessage.status
+        }
+        return message
+      })
+
+      setMessages(updatedMessages)
+    } catch (e) {
+      alert("failed to send message" + e.message)
+    }
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const { text } = data
+    if (!text || !text.trim()) return null
+    sendMessage({ text })
+  }
+
+  const onSendFile = async (e: React.FormEvent<HTMLInputElement>) => {
+    const files = e.currentTarget?.files
+    if (files && files.length) {
+      const [file] = files as any
+      await sendMessage({ file })
     }
   }
 
   // TODO handle error
   const handleDelete = async () => {
     const isDeletedData = isDeleted as string[]
-    const newDataMesssage = dataMessage.filter((m) => !isDeletedData.includes(m.id))
-    setDataMessage(newDataMesssage)
+    const newDataMesssage = messages.filter((m) => !isDeletedData.includes(m.id))
+    setMessages(newDataMesssage)
     setIsDeleted([])
     deleteChats({
       variables: {
@@ -323,7 +323,7 @@ const Chat = (props: ChatProps): JSX.Element => {
           {loading ? (
             <LoadingProgress />
           ) : (
-            dataMessage?.map((m, i) => {
+            messages?.map((m, i) => {
               if (!m) return null
               if (m.createdBy?.id === user?.id) {
                 return <MessageTextRight key={i} message={m} isDeleted={isDeleted} setIsDeleted={setIsDeleted} />
