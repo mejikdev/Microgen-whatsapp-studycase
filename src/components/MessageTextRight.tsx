@@ -69,6 +69,10 @@ const useStyles = makeStyles({
     color: "grey",
     whiteSpace: "nowrap",
   },
+  disabledLink: {
+    pointerEvents: "none",
+    cursor: "default",
+  },
 })
 
 type MessageTextRightProps = {
@@ -141,7 +145,12 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
               ) : (
                 <Box>
                   <Box bgcolor="#7676801F" display="flex" marginBottom="12px" style={{ padding: "7px 9px" }}>
-                    <a href={message?.file} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={message?.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={message?.status === "SENDING" ? classes.disabledLink : undefined}
+                    >
                       <img src={iconDocument} alt="icon" style={{ marginRight: 5 }} />
                     </a>
                     <Typography component="span" style={{ alignSelf: "center" }}>
