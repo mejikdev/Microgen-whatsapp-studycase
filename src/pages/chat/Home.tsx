@@ -9,6 +9,8 @@ type HomeProps = {
   user?: User
 }
 
+const w = window as any
+
 const Home = (props: HomeProps): JSX.Element => {
   const { user } = props
   const history = useHistory()
@@ -21,6 +23,14 @@ const Home = (props: HomeProps): JSX.Element => {
       userId: user?.id,
     },
   })
+
+  useEffect(() => {
+    if (mode === "CHAT") {
+      w.OneSignal.setSubscription(false)
+    } else {
+      w.OneSignal.setSubscription(true)
+    }
+  }, [mode])
 
   useEffect(() => {
     if (!user?.firstName) {

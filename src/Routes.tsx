@@ -1,3 +1,4 @@
+import useNotification from "hooks/notification"
 import { UserQuery } from "hooks/user"
 import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
@@ -28,10 +29,27 @@ const PrivateRoute = ({ path, autheticated, nonAuthenticatedRedirect, children }
 }
 
 function RouterProvider(): JSX.Element {
-  const { data, loading } = UserQuery()
+  const { data, loading, previousData } = UserQuery()
+  const { subscribe } = useNotification()
+
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w: any = window
+    w.OneSignal.isPushNotificationsEnabled(function (isEnabled: boolean) {
+      if (isEnabled && !previousData && data?.user) {
+        w.OneSignal.getUserId(function (userId: string) {
+          subscribe({
+            variables: {
+              playerId: userId,
+              segment: "conversation",
+            },
+          })
+        })
+      }
+    })
+  }, [subscribe, data?.user, previousData])
 
   const authenticated = Boolean(data?.user)
-  // const a = 1
 
   if (loading) {
     return <SplashScreen />
