@@ -112,7 +112,7 @@ const ListChat = (props: ListChatProps): JSX.Element => {
       <Box>
         {loading ? (
           <LoadingProgress />
-        ) : conversations.length === 0 ? (
+        ) : data?.conversations.length === 0 ? (
           <EmptyChat />
         ) : (
           conversations.map((conversation: Conversation) => {
