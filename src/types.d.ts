@@ -5,6 +5,7 @@ interface User {
   role: string
   avatar: string
   phoneNumber: string
+  bio?: string
 }
 
 interface Conversation {

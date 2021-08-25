@@ -70,7 +70,7 @@ const ListContact = (props: ListContactProps): JSX.Element => {
             <ChatItem
               key={u.id}
               userName={u.firstName}
-              userMessage={u.phoneNumber}
+              userMessage={u?.bio}
               userAvatar={u.avatar}
               handleOpenChat={handleOpenChat}
               recipient={u}

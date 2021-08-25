@@ -10,6 +10,7 @@ const query = {
           firstName
           avatar
           phoneNumber
+          bio
         }
       }
     }

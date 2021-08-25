@@ -103,8 +103,6 @@ const ListChat = (props: ListChatProps): JSX.Element => {
     }
   }, [sub])
 
-  console.log(conversations)
-
   return (
     <>
       <Header child={<Title />} />

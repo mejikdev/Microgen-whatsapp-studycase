@@ -33,10 +33,16 @@ const Home = (props: HomeProps): JSX.Element => {
   }, [mode])
 
   useEffect(() => {
-    if (!user?.firstName) {
-      history.push("/setProfile")
+    if (history.action === "PUSH" && history.location.pathname.toString() === "/") {
+      console.log("sini")
+
+      history.block()
+    } else {
+      if (!user?.firstName) {
+        history.push("/setProfile")
+      }
     }
-  }, [user])
+  }, [user, history])
 
   const handleOpenChat = (conversationId?: string, recipient?: User) => {
     setMode("CHAT")
