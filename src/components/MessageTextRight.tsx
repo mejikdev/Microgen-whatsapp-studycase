@@ -81,6 +81,11 @@ type MessageTextRightProps = {
   isDeleted: string[]
 }
 
+function isImgLink(url: string): boolean {
+  if (typeof url !== "string") return false
+  return url.match(/\.(jpeg|jpg|gif|png)$/) != null
+}
+
 const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
   const classes = useStyles()
   const { message, setIsDeleted, isDeleted } = props
@@ -144,19 +149,34 @@ const MessageTextRight = (props: MessageTextRightProps): JSX.Element => {
                 </Box>
               ) : (
                 <Box>
-                  <Box bgcolor="#7676801F" display="flex" marginBottom="12px" style={{ padding: "7px 9px" }}>
+                  {isImgLink(message?.file) ? (
                     <a
                       href={message?.file}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={message?.status === "SENDING" ? classes.disabledLink : undefined}
                     >
-                      <img src={iconDocument} alt="icon" style={{ marginRight: 5 }} />
+                      <img
+                        src={message?.file}
+                        alt=""
+                        style={{ height: "100%", width: "100%", margin: "5px 8px 12px 0px" }}
+                      />
                     </a>
-                    <Typography component="span" style={{ alignSelf: "center" }}>
-                      FILE
-                    </Typography>
-                  </Box>
+                  ) : (
+                    <Box bgcolor="#7676801F" display="flex" marginBottom="12px" style={{ padding: "7px 9px" }}>
+                      <a
+                        href={message?.file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={message?.status === "SENDING" ? classes.disabledLink : undefined}
+                      >
+                        <img src={iconDocument} alt="icon" style={{ marginRight: 5 }} />
+                      </a>
+                      <Typography component="span" style={{ alignSelf: "center" }}>
+                        FILE
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               )}
 
