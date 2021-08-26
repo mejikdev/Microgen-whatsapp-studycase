@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
         height: "92.5vh",
         minHeight: "calc(90vh - 60px)",
       },
-      border: "1px solid green",
       "@global": {
         fontFamily: "roboto",
       },
