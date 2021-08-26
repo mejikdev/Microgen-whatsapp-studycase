@@ -16,16 +16,15 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: "480px",
       width: "100%",
       boxSizing: "border-box",
-      height: "100vh",
-      // minHeight: "calc(100vh - 60px)",
-      // [theme.breakpoints.up("lg")]: {
-      //   height: "100vh",
-      //   minHeight: "calc(100vh - 60px)",
-      // },
-      // [theme.breakpoints.down("md")]: {
-      //   height: "90vh",
-      //   minHeight: "calc(90vh - 60px)",
-      // },
+      [theme.breakpoints.up("lg")]: {
+        height: "100vh",
+        minHeight: "calc(100vh - 60px)",
+      },
+      [theme.breakpoints.down("md")]: {
+        height: "92.5vh",
+        minHeight: "calc(90vh - 60px)",
+      },
+      border: "1px solid green",
       "@global": {
         fontFamily: "roboto",
       },
