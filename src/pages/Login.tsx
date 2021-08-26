@@ -47,7 +47,7 @@ const Login: React.FC = () => {
     formState: { errors },
   } = useForm<IFormInput>()
   const [loading, setLoading] = useState(false)
-  const [failed, setFailed] = useState(false)
+  const [failed, setFailed] = useState<any>(false)
 
   useEffect(() => {
     destroyCookie(null, "phoneNumber")
@@ -79,9 +79,13 @@ const Login: React.FC = () => {
         history.push("/verification")
       })
       .catch((err) => {
-        console.log("err", err)
+        console.log("error", err)
+        if (err?.response.status === 400) {
+          setFailed({ message: err?.response?.data?.message || "Something Wrong!" })
+        } else {
+          setFailed(true)
+        }
         setLoading(false)
-        setFailed(true)
         resetForm()
       })
   }
@@ -91,7 +95,7 @@ const Login: React.FC = () => {
   }
 
   if (failed) {
-    return <AlertMessage open={true} message="Something Wrong!" action={() => setFailed(false)} />
+    return <AlertMessage open={true} message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
   }
 
   return (

@@ -140,13 +140,13 @@ const Verifcation: React.FC = () => {
       })
       .catch((err) => {
         console.log("err", err)
-        resetForm()
-        setLoading(false)
         if (err?.response.status === 400) {
           setFailed({ message: err?.response?.data?.message || "Something Wrong!" })
         } else {
           setFailed(true)
         }
+        setLoading(false)
+        resetForm()
       })
   }
 
