@@ -134,7 +134,11 @@ const Verifcation: React.FC = () => {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         })
-        window.location.href = "/setProfile"
+        if (res?.data?.user?.firstName) {
+          window.location.href = "/"
+        } else {
+          window.location.href = "/setProfile"
+        }
         destroyCookie(null, "phoneNumber")
         destroyCookie(null, "fakeOtp")
       })
