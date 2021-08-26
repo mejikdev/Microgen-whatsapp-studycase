@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
-import smsIcon from "assets/icons/smsIcon.png"
+import smsIcon from "assets/images/chat.png"
 import React from "react"
 import { GREY } from "utils/colors"
 

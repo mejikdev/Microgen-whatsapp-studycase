@@ -2,12 +2,13 @@ import { Button, Divider, Grid, TextField, Typography } from "@material-ui/core"
 import Box from "@material-ui/core/Box"
 import { makeStyles } from "@material-ui/core/styles"
 import smsIcon from "assets/icons/smsIcon.png"
+import axios from "axios"
 import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
 import SpanError from "components/SpanError"
 import Title from "components/Title"
 import { AuthMutation } from "hooks/auth"
-import { setCookie } from "nookies"
+import { destroyCookie, parseCookies, setCookie } from "nookies"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { Link, useHistory } from "react-router-dom"
@@ -38,27 +39,72 @@ const useStyles = makeStyles({
     marginRight: 5,
     alignSelf: "center",
   },
+  descriptionText: {
+    fontStyle: "normal",
+    fontWeight: "normal",
+    fontSize: 12,
+    textAlign: "center",
+    color: "#000000",
+  },
 })
 
 interface IFormInput {
   code: number
 }
 
+type propsDescriptionFakeOTp = {
+  code: string
+}
+
+type propsDescription = {
+  phoneNumber: string
+}
+
+const Description = (props: propsDescription): JSX.Element => {
+  const classes = useStyles()
+  return (
+    <Box>
+      <Typography className={classes.descriptionText}>
+        Waiting to automatically detect as SMS sent to <br /> {props?.phoneNumber}.{" "}
+        <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
+          Wrong number ?
+        </Link>
+      </Typography>
+    </Box>
+  )
+}
+
+const DescriptionFakeOtp = (props: propsDescriptionFakeOTp): JSX.Element => {
+  const classes = useStyles()
+  return (
+    <Box>
+      <Typography className={classes.descriptionText}>
+        Your OTP is {props?.code} (This is for demo purpose only, set your twilio key in order to work on production
+        env)
+      </Typography>
+      <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
+        Wrong number ?
+      </Link>
+    </Box>
+  )
+}
+
 const Verifcation: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
-  const { verify, login } = AuthMutation()
+  const { login } = AuthMutation()
   const [loading, setLoading] = useState(false)
   const [loadingResend, setLoadingResend] = useState(false)
   const [seconds, setSeconds] = React.useState(60)
   const [failed, setFailed] = useState<any>(false)
-  const phoneNumber = localStorage.getItem("phoneNumber")
   const {
     register,
-    reset,
+    reset: resetForm,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>()
+  const cookies = parseCookies()
+  const { phoneNumber, fakeOtp } = cookies
 
   useEffect(() => {
     if (!phoneNumber) {
@@ -73,26 +119,31 @@ const Verifcation: React.FC = () => {
   }, [seconds])
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    if (!data?.code) return null
     setLoading(true)
-    verify({
-      variables: {
-        phoneNumber: phoneNumber,
+    await axios
+      .post(process.env.REACT_APP_API_URL + "/function/otp/verifyLoginWithPhone", {
+        phoneNumber,
         code: data.code,
-      },
-    })
-      .then((res: any) => {
+      })
+      .then((res) => {
+        console.log(res)
+        resetForm()
         setLoading(false)
-        setCookie(null, "token", res?.data?.verifyLoginWithPhone.token, {
+        setCookie(null, "token", res?.data?.token, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         })
         window.location.href = "/setProfile"
+        destroyCookie(null, "phoneNumber")
+        destroyCookie(null, "fakeOtp")
       })
-      .catch((err: Error) => {
-        reset()
+      .catch((err) => {
+        console.log("err", err)
+        resetForm()
         setLoading(false)
-        if (err?.message?.includes("Invalid verification code")) {
-          setFailed({ message: "Invalid verification code" })
+        if (err?.response.status === 400) {
+          setFailed({ message: err?.response?.data?.message || "Something Wrong!" })
         } else {
           setFailed(true)
         }
@@ -109,17 +160,6 @@ const Verifcation: React.FC = () => {
 
   if (failed) {
     return <AlertMessage open={true} message={failed?.message || "Something Wrong!"} action={() => setFailed(false)} />
-  }
-
-  const Description = (): JSX.Element => {
-    return (
-      <Box>
-        Waiting to automatically detect as SMS sent to {phoneNumber}.{" "}
-        <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
-          Wrong number ?
-        </Link>
-      </Box>
-    )
   }
 
   const handleResendCode = async () => {
@@ -141,7 +181,10 @@ const Verifcation: React.FC = () => {
 
   return (
     <>
-      <Title title="Verify your phone number" description={<Description />} />
+      <Title
+        title="Verify your phone number"
+        description={fakeOtp ? <DescriptionFakeOtp code={fakeOtp} /> : <Description phoneNumber={phoneNumber} />}
+      />
       {/* !TODO input style */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container className={classes.inputSection}>
@@ -164,17 +207,21 @@ const Verifcation: React.FC = () => {
           </Grid>
         </Grid>
 
-        <Box className={classes.resendGroup}>
-          <Button className={classes.resend} onClick={() => handleResendCode()} disabled={Boolean(seconds)}>
-            <img src={smsIcon} alt="sms icon" className={classes.iconSms} />
-            <Typography variant="subtitle2">Resend SMS</Typography>
-          </Button>
-          <Box>
-            <Typography variant="subtitle1">{seconds}</Typography>
-          </Box>
-        </Box>
+        {!fakeOtp && (
+          <>
+            <Box className={classes.resendGroup}>
+              <Button className={classes.resend} onClick={() => handleResendCode()} disabled={Boolean(seconds)}>
+                <img src={smsIcon} alt="sms icon" className={classes.iconSms} />
+                <Typography variant="subtitle2">Resend SMS</Typography>
+              </Button>
+              <Box>
+                <Typography variant="subtitle1">{seconds}</Typography>
+              </Box>
+            </Box>
 
-        <Divider style={{ margin: "0px 45px", color: "red" }} />
+            <Divider style={{ margin: "0px 45px", color: "red" }} />
+          </>
+        )}
 
         <ButtonCustom title="Verify" />
       </form>

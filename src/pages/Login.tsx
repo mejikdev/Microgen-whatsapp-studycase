@@ -1,11 +1,12 @@
 import { Box, Grid, InputAdornment, TextField } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import axios from "axios"
 import ButtonCustom from "components/Button"
 import AlertMessage from "components/modal/AlertMessage"
 import SpanError from "components/SpanError"
 import Title from "components/Title"
-import { AuthMutation } from "hooks/auth"
-import React, { useState } from "react"
+import { destroyCookie, setCookie } from "nookies"
+import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useHistory } from "react-router-dom"
 
@@ -39,35 +40,49 @@ interface IFormInput {
 const Login: React.FC = () => {
   const classes = useStyles()
   const history = useHistory()
-  const { login } = AuthMutation()
   const {
     register,
     handleSubmit,
-    reset,
+    reset: resetForm,
     formState: { errors },
   } = useForm<IFormInput>()
   const [loading, setLoading] = useState(false)
   const [failed, setFailed] = useState(false)
 
+  useEffect(() => {
+    destroyCookie(null, "phoneNumber")
+    destroyCookie(null, "fakeOtp")
+  }, [])
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setLoading(true)
     const { phoneNumber, phoneCode } = data
     const fullPhoneNumber = (phoneCode || "+62") + phoneNumber
-    await login({
-      variables: {
+    axios
+      .post(process.env.REACT_APP_API_URL + "/function/otp/loginWithPhone", {
         phoneNumber: fullPhoneNumber,
-      },
-    })
-      .then(() => {
+      })
+      .then((res) => {
+        const code = res?.data?.code
+        if (code) {
+          setCookie(null, "fakeOtp", code, {
+            maxAge: 30 * 24 * 60 * 60,
+            path: "/",
+          })
+        }
+        setCookie(null, "phoneNumber", fullPhoneNumber, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        })
         setLoading(false)
-        localStorage.setItem("phoneNumber", fullPhoneNumber)
-        reset()
+        resetForm()
         history.push("/verification")
       })
       .catch((err) => {
+        console.log("err", err)
         setLoading(false)
         setFailed(true)
-        reset()
+        resetForm()
       })
   }
 
