@@ -79,12 +79,13 @@ const DescriptionFakeOtp = (props: propsDescriptionFakeOTp): JSX.Element => {
   return (
     <Box>
       <Typography className={classes.descriptionText}>
-        Your OTP is <b>{props?.code} </b> (This is for demo purpose only, set your twilio key in order to work on
-        production env)
+        Your OTP is <b>{props?.code} </b>
+        <br />
+        This is for demo purpose only, set your twilio key in order to work on production env.{" "}
+        <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
+          Wrong number ?
+        </Link>
       </Typography>
-      <Link to="/public" style={{ textDecoration: "none", color: "blue" }}>
-        Wrong number ?
-      </Link>
     </Box>
   )
 }
