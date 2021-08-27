@@ -16,9 +16,28 @@ type IPrivateRoute = {
   children: React.ReactNode
 }
 
+type IPublicRoute = {
+  path: string
+  autheticated: boolean
+  authenticatedRedirect: string
+  children: React.ReactNode
+}
+
 const PrivateRoute = ({ path, autheticated, nonAuthenticatedRedirect, children }: IPrivateRoute) => {
   if (!autheticated) {
     return <Route render={() => <Redirect to={nonAuthenticatedRedirect} />} />
+  }
+
+  return (
+    <Route exact path={path}>
+      {children}
+    </Route>
+  )
+}
+
+const PublicRoute = ({ path, autheticated, authenticatedRedirect, children }: IPublicRoute) => {
+  if (autheticated) {
+    return <Route render={() => <Redirect to={authenticatedRedirect} />} />
   }
 
   return (
@@ -58,12 +77,12 @@ function RouterProvider(): JSX.Element {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/public">
+        <PublicRoute path="/public" autheticated={authenticated} authenticatedRedirect="/">
           <Login />
-        </Route>
-        <Route exact path="/verification">
+        </PublicRoute>
+        <PublicRoute path="/verification" autheticated={authenticated} authenticatedRedirect="/">
           <Verification />
-        </Route>
+        </PublicRoute>
         <PrivateRoute autheticated={authenticated} nonAuthenticatedRedirect="/public" path="/setProfile">
           <Profile user={data?.user} />
         </PrivateRoute>

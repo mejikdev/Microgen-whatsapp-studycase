@@ -33,9 +33,7 @@ const Home = (props: HomeProps): JSX.Element => {
   }, [mode])
 
   useEffect(() => {
-    if (history.action === "PUSH" && history.location.pathname.toString() === "/") {
-      console.log("sini")
-
+    if (history.action === "PUSH" && history.location.pathname.toString() === "/" && mode !== "LISTCHAT") {
       history.block()
     } else {
       if (!user?.firstName) {
