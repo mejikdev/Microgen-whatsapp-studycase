@@ -42,7 +42,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
   const { changeProfile } = UserMutation()
   const history = useHistory()
   const [loading, setLoading] = useState(false)
-  const [fileInput, setFileInput] = useState<any>({})
+  const [fileInput, setFileInput] = useState<any>()
   const [fileUrl, setFileUrl] = useState<string>("")
   const {
     register,
@@ -67,7 +67,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
     changeProfile({
       variables: {
         firstName: name,
-        avatar: Object.keys(fileInput).length !== 0 ? fileInput : "",
+        avatar: fileInput !== 0 ? fileInput : "",
       },
     })
       .then(() => {
@@ -103,7 +103,7 @@ const Profile = (props: ProfileProps): JSX.Element => {
               style={{ display: "none" }}
               id="icon-button-file"
             />
-            <IconButton size="medium">
+            <IconButton size="medium" style={{ padding: "10px 15px" }}>
               <label htmlFor="icon-button-file">
                 {fileUrl ? (
                   <img
