@@ -16,14 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: "480px",
       width: "100%",
       boxSizing: "border-box",
-      [theme.breakpoints.up("lg")]: {
+      [theme.breakpoints.up(600)]: {
         height: "100vh",
         minHeight: "calc(100vh - 60px)",
       },
-      [theme.breakpoints.down("md")]: {
-        height: "92.5vh",
-        minHeight: "calc(90vh - 60px)",
-      },
+      height: "92.5vh",
+      minHeight: "calc(90vh - 60px)",
       "@global": {
         fontFamily: "roboto",
       },
