@@ -274,7 +274,7 @@ const Chat = (props: ChatProps): JSX.Element => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { text } = data
-    if (!text || !text.trim()) return null
+    if (!text || !data?.text?.trim()) return null
     sendMessage({ text })
   }
 
