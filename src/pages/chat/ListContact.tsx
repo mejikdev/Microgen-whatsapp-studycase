@@ -61,7 +61,7 @@ const ListContact = (props: ListContactProps): JSX.Element => {
     <>
       <Header child={<Title handleBack={handleBack} />} />
 
-      <div>
+      <Box>
         {loading ? (
           <LoadingProgress />
         ) : (
@@ -78,7 +78,7 @@ const ListContact = (props: ListContactProps): JSX.Element => {
             />
           ))
         )}
-      </div>
+      </Box>
     </>
   )
 }
