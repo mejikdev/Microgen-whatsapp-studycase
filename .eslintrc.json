@@ -1,0 +1,46 @@
+
+{
+  "env": {
+      "browser": true, // Allows for the use of predefined global variables for browsers (document, window, etc.)
+      "jest": true, // Allows for the use of predefined global variables for Jest (describe, test, etc.)
+      "node": true // Allows for the use of predefined global variables for Node.js (module, process, etc.)
+  },
+  "extends": [
+      "react-app", // Use the recommended rules from eslint-config-react-app (bundled with Create React App)
+      "eslint:recommended", // Use the recommened rules from eslint
+      "plugin:@typescript-eslint/recommended", // Use the recommended rules from @typescript-eslint/eslint-plugin
+      "plugin:react/recommended", // Use the recommended rules from eslint-plugin-react
+      "plugin:prettier/recommended", // Enables eslint-plugin-prettier to display Prettier errors as ESLint errors
+      "plugin:jsx-a11y/recommended"
+  ],
+  "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
+  "parserOptions": {
+      "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+      "ecmaFeatures": {
+          "jsx": true // Allows for the parsing of JSX
+      },
+      "sourceType": "module" // Allows for the use of imports
+  },
+  "plugins": [
+      "@typescript-eslint", // Allows for manually setting @typescript-eslint/* rules 
+      "prettier", // Allows for manually setting prettier/* rules
+      "simple-import-sort",
+      "react" // Allows for manually setting react/* rules
+  ],
+  "settings": {
+        "react": {
+            "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
+        },
+    "import/resolver": {
+        "node": {
+            "moduleDirectory": ["node_modules", "src/"]
+        }
+    }
+  },
+  "rules": {
+    "semi": [2, "never"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "quotes": ["error", "double"]
+  }
+}

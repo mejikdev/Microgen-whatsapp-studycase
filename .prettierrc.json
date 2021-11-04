@@ -1,0 +1,8 @@
+{
+  "trailingComma": "all",
+  "semi":false,
+  "arrowParens": "always",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "jsxBracketSameLine": false
+}
