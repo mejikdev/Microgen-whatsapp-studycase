@@ -1,46 +1,46 @@
-# Getting Started with Create React App
+# Whatsapp Clone
+An application of fast and simple messaging for free. This is a study case made with Microgen, a low code microservices backend which delivers your app faster to market.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <img width="700" src="https://user-images.githubusercontent.com/46531367/131293702-154d1615-677b-4fdb-834d-f80f89f17d33.JPG">
+</p>
 
-## Available Scripts
+<p align="center">
+<a href="https://whatsapp.mejik.id/public"><img alt="App" src="https://img.shields.io/static/v1?label=Try&message=Demo App&color=<COLOR>" /></a>
+</p>
 
-In the project directory, you can run:
+<p align="center">
+  <img width="400" src="https://user-images.githubusercontent.com/46531367/130711759-0536d346-8724-4808-ad68-791d4269528e.png">
+</p>
 
-### `npm start`
+<p align="center">
+<a href="https://stg-waclone1pv1z.microgen.id/graphql"><img alt="App" src="https://img.shields.io/static/v1?label=View&message=Microgen Backend&color=<COLOR>" /></a>
+</p>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Getting Started
+- Backend
+  - Register to [www.microgen.id](www.microgen.id)
+  - Open sample app
+- Frontend
+  - Install nodejs 
+  - Clone this github [repositary](https://github.com/mejikdev/Microgen-whatsapp-studycase.git)
+  - Install dependencies : run `npm install` in root project
+  - Rename file `.env.example` to `.env`
+  - Run project : `npm start`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Generated REST API & GQL
+- Token to acces : eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyJ9.eyJpYXQiOjE2Mjk5NTk4MjYsImV4cCI6MTYzMjU1MTgyNiwiYXVkIjoiaHR0cHM6Ly95b3VyZG9tYWluLmNvbSIsImlzcyI6ImZlYXRoZXJzIiwic3ViIjoiNjEyNzE2MjU1NDk2OWEwMDNjYzRhYWE2IiwianRpIjoiZThhMTZmMzUtMDY1Ny00NjNiLTgxYTMtOThkZjdkYjkwMGU2In0.205VjojpRxz4iqPIxft-ZY3i_zjeTH8Mtc74XEnxI7Q
 
-### `npm test`
+### Rest API
+|Consume Query         |Endpoint|Image|
+|----------------------|----|-----|
+|Get Conversations List|https://stg-waclone1pv1z.microgen.id/api/conversations|<img src="https://user-images.githubusercontent.com/46531367/131047933-85fc90cb-f407-4bd3-935e-d5068a544589.jpg" width="400" />
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### GraphQL
+|Consume Query         |Endpoint|Image|
+|----------------------|----|-----|
+|Login with Phone Number|https://stg-waclone1pv1z.microgen.id/graphql|<img src="https://user-images.githubusercontent.com/46531367/130990158-37b36950-a3fb-4265-8282-72d385e225b2.jpg" width="400" />
+|Get Conversations List|https://stg-waclone1pv1z.microgen.id/graphql|<img src="https://user-images.githubusercontent.com/46531367/130990166-055c4fdb-9b05-4a04-9f65-bfec54a822a1.jpg" width="400" />
+|Send Chat|https://stg-waclone1pv1z.microgen.id/graphql|<img src="https://user-images.githubusercontent.com/46531367/130990168-dd182933-9c18-4b5f-80a9-f4ca3e80f936.jpg" width="400" />
+|Subscription Chat|https://stg-waclone1pv1z.microgen.id/graphql|<img src="https://user-images.githubusercontent.com/46531367/130994050-6cd3b541-b656-4f50-89b9-98eba6288bcb.jpg" width="400" />
